@@ -1,7 +1,6 @@
-![itmo_logo_horiz_transp_en](https://user-images.githubusercontent.com/89847233/143940063-6daa32e8-3134-480b-b529-64a549830322.png)
-________________________
-## M3109 || 338980 
-________________________
+![ITMO_logo](https://user-images.githubusercontent.com/89847233/143940681-0cdf9d4d-75ee-4b81-9277-75796f806c40.png)
+_________________________________
+## `Алгоритмы и структуры данных`
 1. [a + b](https://github.com/tkhapchaev/Algorithms-And-Data-Structures/blob/Laboratory-Works/aplusb.py)
 2. [a + b²](https://github.com/tkhapchaev/Algorithms-And-Data-Structures/blob/Laboratory-Works/aplusbb.py)
 3. [Черепашка (обход в ширину)](https://github.com/tkhapchaev/Algorithms-And-Data-Structures/blob/Laboratory-Works/turtle.cpp)
@@ -19,3 +18,5 @@ ________________________
 14. [Пирамидальная сортировка (heap sort)](https://github.com/tkhapchaev/Algorithms-And-Data-Structures/blob/Laboratory-Works/heapSort.cpp)
 15. [Цифровая сортировка (LSD radix sort)](https://github.com/tkhapchaev/Algorithms-And-Data-Structures/blob/Laboratory-Works/radixSort.cpp)
 16. [Приоритетная очередь](https://github.com/tkhapchaev/Algorithms-And-Data-Structures/blob/Laboratory-Works/priorityQueue.cpp)
+
+## `Программирование на C`
