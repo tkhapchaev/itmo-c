@@ -106,7 +106,7 @@ int main() {
   scanf("%d", & seconds);
   if (seconds <= 0) {
     printf("-----------------------------------------------------------------------------------------------------------------------\n");
-    printf("FATAL: THE NUMBER IS INVALID \n");
+    printf("FATAL :: THE NUMBER IS INVALID \n");
     __continue = 0;
   }
 
