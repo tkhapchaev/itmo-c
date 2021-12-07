@@ -50,7 +50,7 @@ int main(int argc, char * argv[]) {
     }
 
     if (isUnknown == 1) {
-      printf("%s", "ERROR: Unknown command");
+      printf("%s", "FATAL :: UNKNOWN COMMAND");
     }
   }
 
