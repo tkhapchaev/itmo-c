@@ -1,4 +1,3 @@
-![ITMO_logo](https://user-images.githubusercontent.com/89847233/143940681-0cdf9d4d-75ee-4b81-9277-75796f806c40.png)
 ### `Алгоритмы и структуры данных`
 1. [a + b]()
 2. [a + b²]()
