@@ -27,12 +27,12 @@ def merge_sort(array):
     if len(array) == 1 or len(array) == 0:
         return array
     middle = len(array) // 2
-    merged_array1 = array[:middle]
-    merged_array2 = array[middle:]
-    merged_array1 = merge_sort(merged_array1)
-    merged_array2 = merge_sort(merged_array2)
+    merged_array_1 = array[:middle]
+    merged_array_2 = array[middle:]
+    merged_array_1 = merge_sort(merged_array_1)
+    merged_array_2 = merge_sort(merged_array_2)
 
-    return merging(merged_array1, merged_array2)
+    return merging(merged_array_1, merged_array_2)
 
 merge_sort(input_array)
 file_out = open("inversions.out", "w")
