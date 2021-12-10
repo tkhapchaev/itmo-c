@@ -1,5 +1,5 @@
-filein = open("race.in", "r")
-N = int(filein.readline())
+file_in = open("race.in", "r")
+N = int(file_in.readline())
 
 flag = True
 string = []
@@ -7,7 +7,7 @@ passed = []
 country = ""
 
 for i in range(N):
-    string.append(list(map(str, filein.readline().split())))
+    string.append(list(map(str, file_in.readline().split())))
 
 def merging(left, right):
     i = 0
@@ -31,24 +31,23 @@ def merge_sort(array):
     if len(array) == 1 or len(array) == 0:
         return array
     middle = len(array) // 2
-    arr1 = array[:middle]
-    arr2 = array[middle:]
-    arr1 = merge_sort(arr1)
-    arr2 = merge_sort(arr2)
+    merged_array_1 = array[:middle]
+    merged_array_2 = array[middle:]
+    merged_array_1 = merge_sort(merged_array_1)
+    merged_array_2 = merge_sort(merged_array_2)
 
-    return merging(arr1, arr2)
+    return merging(merged_array_1, merged_array_2)
 
-fileout = open("race.out", "w")
+file_out = open("race.out", "w")
 string = merge_sort(string)
-
 for j in range(N):
     if string[j][0] != country:
         flag = True
     if flag:
-        print("===" + " " + string[j][0] + " " + "===", file = fileout)
+        print("===" + " " + string[j][0] + " " + "===", file = file_out)
         country = string[j][0]
         flag = False
     if string[j][0] == country:
-        print(string[j][1], file = fileout)
+        print(string[j][1], file = file_out)
 
-fileout.close()        
+file_out.close()        
