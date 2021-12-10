@@ -1,6 +1,5 @@
 file_in = open("race.in", "r")
 N = int(file_in.readline())
-
 flag = True
 string = []
 passed = []
