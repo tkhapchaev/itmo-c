@@ -58,7 +58,7 @@ int pop(QUEUE * __queue) {
 int main() {
   clock_t start, stop;
   start = clock();
-  FILE * filein = fopen("access_log_Jul95", "r");
+  FILE * file_in = fopen("access_log_Jul95", "r");
   QUEUE requests;
   requests.head = NULL;
   requests.tail = NULL;
@@ -98,10 +98,10 @@ int main() {
   char ERROR_J[10] = "\" 510 ";
   char ERROR_K[10] = "\" 511 ";
 
-  while ((symbol = fgetc(filein)) != EOF) {
+  while ((symbol = fgetc(file_in)) != EOF) {
     if (symbol == '\n') toCountLines++;
   }
-  fseek(filein, 0, 0);
+  fseek(file_in, 0, 0);
 
   scanf("%d", & seconds);
   if (seconds <= 0) {
@@ -116,7 +116,7 @@ int main() {
 
   for (int i = 0; i < toCountLines; i++) {
     int __flag = 0;
-    __pointToString = fgets(string, 550, filein);
+    __pointToString = fgets(string, 550, file_in);
     if ((toFind = strstr(__pointToString, ERROR_A)) != NULL) __flag++;
     if ((toFind = strstr(__pointToString, ERROR_B)) != NULL) __flag++;
     if ((toFind = strstr(__pointToString, ERROR_C)) != NULL) __flag++;
@@ -141,7 +141,7 @@ int main() {
       }
     }
   }
-  fseek(filein, 0, 0);
+  fseek(file_in, 0, 0);
 
   printf("-----------------------------------------------------------------------------------------------------------------------\n");
   printf("5XX -- Server errors -- counted: %d \n", toCountErrors);
@@ -149,7 +149,7 @@ int main() {
 
   if (__continue != 0) {
     for (int i = 0; i < toCountLines; i++) {
-      __pointToString = fgets(string, 550, filein);
+      __pointToString = fgets(string, 550, file_in);
       bracketPosition = strchr(__pointToString, '[');
 
       if (bracketPosition != NULL) {
@@ -211,5 +211,5 @@ int main() {
   printf("Process finished in %d seconds \n", (int)(stop - start) / CLK_TCK);
   printf("-----------------------------------------------------------------------------------------------------------------------\n");
 
-  fclose(filein);
+  fclose(file_in);
 }
