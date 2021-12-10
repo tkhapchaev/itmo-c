@@ -1,10 +1,10 @@
-filein = open("inversions.in", "r")
-N = int(filein.readline())
-A = list(map(int, filein.readline().split()))
-inv_count = 0
+file_in = open("inversions.in", "r")
+N = int(file_in.readline())
+input_array = list(map(int, file_in.readline().split()))
+inversions_counter = 0
 
 def merging(left, right):
-    global inv_count
+    global inversions_counter
     i = 0
     j = 0
     result = []
@@ -17,7 +17,7 @@ def merging(left, right):
             i += 1
         else:
             result.append(right[j])
-            inv_count = inv_count + left_len - i
+            inversions_counter = inversions_counter + left_len - i
             j += 1
 
     result = result + left[i:] + right[j:]
@@ -27,15 +27,14 @@ def merge_sort(array):
     if len(array) == 1 or len(array) == 0:
         return array
     middle = len(array) // 2
-    arr1 = array[:middle]
-    arr2 = array[middle:]
-    arr1 = merge_sort(arr1)
-    arr2 = merge_sort(arr2)
+    merged_array1 = array[:middle]
+    merged_array2 = array[middle:]
+    merged_array1 = merge_sort(merged_array1)
+    merged_array2 = merge_sort(merged_array2)
 
-    return merging(arr1, arr2)
+    return merging(merged_array1, merged_array2)
 
-merge_sort(A)
-fileout = open("inversions.out", "w")
-print(inv_count, file = fileout)
-
-fileout.close()
+merge_sort(input_array)
+file_out = open("inversions.out", "w")
+print(inversions_counter, file = file_out)
+file_out.close()
