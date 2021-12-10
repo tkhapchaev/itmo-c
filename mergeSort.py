@@ -1,6 +1,6 @@
-filein = open("sort.in", "r")
-N = int(filein.readline())
-A = list(map(int, filein.readline().split()))
+file_in = open("sort.in", "r")
+N = int(file_in.readline())
+input_array = list(map(int, file_in.readline().split()))
 
 def merging(left, right):
     i = 0
@@ -24,14 +24,13 @@ def merge_sort(array):
     if len(array) == 1 or len(array) == 0:
         return array
     middle = len(array) // 2
-    arr1 = array[:middle]
-    arr2 = array[middle:]
-    arr1 = merge_sort(arr1)
-    arr2 = merge_sort(arr2)
+    merged_array_1 = array[:middle]
+    merged_array_2 = array[middle:]
+    merged_array_1 = merge_sort(merged_array_1)
+    merged_array_2 = merge_sort(merged_array_2)
 
-    return merging(arr1, arr2)
+    return merging(merged_array_1, merged_array_2)
 
-fileout = open("sort.out", "w")
-print(*merge_sort(A), file = fileout)
-
-fileout.close()
+file_out = open("sort.out", "w")
+print(*merge_sort(input_array), file = file_out)
+file_out.close()
