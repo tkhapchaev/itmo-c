@@ -106,4 +106,8 @@ int main() {
     counter++;
     box[counter] = numberOne;
   }
+
+  fclose(stdin);
+  fclose(stdout);
+  return 0;
 }
