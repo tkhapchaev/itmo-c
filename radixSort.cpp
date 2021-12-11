@@ -47,4 +47,8 @@ int main() {
 
     cout << "\n";
   }
+
+  fclose(stdin);
+  fclose(stdout);
+  return 0;
 }
