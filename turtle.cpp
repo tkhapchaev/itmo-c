@@ -8,8 +8,8 @@ int main() {
   int h, w;
   cin >> h >> w;
 
-  vector < vector < int >> A(h, vector < int > (w)); 
-  vector < vector < int >> B(h, vector < int > (w)); 
+  vector < vector < int >> A(h, vector < int > (w));
+  vector < vector < int >> B(h, vector < int > (w));
 
   for (int i = 0; i < h; i++) {
     for (int j = 0; j < w; j++) {
@@ -33,4 +33,7 @@ int main() {
   }
 
   cout << B[0][w - 1];
+  fclose(stdin);
+  fclose(stdout);
+  return 0;
 }
