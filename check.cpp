@@ -33,4 +33,7 @@ int main() {
 
   if (is_correct) std::cout << "YES" << std::endl;
   else std::cout << "NO" << std::endl;
+  fclose(stdin);
+  fclose(stdout);
+  return 0;
 }
