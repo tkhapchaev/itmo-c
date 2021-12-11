@@ -78,6 +78,9 @@ int main() {
     funclast = myBinarySearchLast(arr, N, counter);
 
     cout << funcfirst << " " << funclast << endl;
-
   }
+
+  fclose(stdin);
+  fclose(stdout);
+  return 0;
 }
