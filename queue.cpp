@@ -47,4 +47,8 @@ int main() {
       addToQueue(Q, number);
     }
   }
+
+  fclose(stdin);
+  fclose(stdout);
+  return 0;
 }
