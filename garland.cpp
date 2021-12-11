@@ -38,4 +38,8 @@ int main() {
 
   cout.precision(2);
   cout << fixed << result;
+
+  fclose(stdin);
+  fclose(stdout);
+  return 0;
 }
