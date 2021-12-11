@@ -6,9 +6,9 @@ int main(int argc, char * argv[]) {
   int position = 0, isEmpty = 0, isUnknown = 1;
   char symbol;
 
-  FILE * filein = fopen(argv[2], "r");
+  FILE * file_in = fopen(argv[2], "r");
 
-  while ((symbol = fgetc(filein)) != EOF) {
+  while ((symbol = fgetc(file_in)) != EOF) {
     symbolsNumber = symbolsNumber + 1;
     if (symbol == '\n')
       linesNumber = linesNumber + 1;
@@ -21,9 +21,9 @@ int main(int argc, char * argv[]) {
   } else
     linesNumber = linesNumber + 1;
 
-  fseek(filein, 0, 0);
+  fseek(file_in, 0, 0);
 
-  while ((symbol = fgetc(filein)) != EOF) {
+  while ((symbol = fgetc(file_in)) != EOF) {
     if (symbol == ' ' || symbol == '\n' || symbol == '\t')
       position = 0;
     else if (position == 0) {
@@ -54,5 +54,5 @@ int main(int argc, char * argv[]) {
     }
   }
 
-  fclose(filein);
+  fclose(file_in);
 }

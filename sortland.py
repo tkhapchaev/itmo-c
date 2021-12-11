@@ -1,7 +1,7 @@
-fin = open("sortland.in", "r")
-fout = open("sortland.out", "w")
-N = int(fin.readline())
-A = list(map(float, fin.readline().split()))
+file_in = open("sortland.in", "r")
+file_out = open("sortland.out", "w")
+N = int(file_in.readline())
+A = list(map(float, file_in.readline().split()))
 B = []
 
 for i in range(0, len(A)):
@@ -17,7 +17,6 @@ for i in range(1, len(A)):
 richest = A[-1]
 poorest = A[0]
 average = A[len(A) // 2]
-
 for i in range(0, len(B)):
     if B[i] == richest:
         richestplace = i
@@ -29,5 +28,5 @@ for i in range(0, len(B)):
 richestplace = str(richestplace + 1)
 poorestplace = str(poorestplace + 1)
 averageplace = str(averageplace + 1)
-fout.write(poorestplace + " " + averageplace + " " + richestplace)
-fout.close()
+file_out.write(poorestplace + " " + averageplace + " " + richestplace)
+file_out.close()

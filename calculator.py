@@ -1,7 +1,6 @@
-filein = open("calcin.txt", "r")
-fileout = open("calcout.txt", "w")
-string = filein.readline().split()
-
+file_in = open("calcin.txt", "r")
+file_out = open("calcout.txt", "w")
+string = file_in.readline().split()
 plus = []
 minus = []
 result = 0
@@ -18,6 +17,6 @@ for i in range(len(string)):
         minus.append(int(string[i + 1]))
 
 result = sum(plus) - sum(minus)
-print(result, file = fileout)
+print(result, file = file_out)
 
-fileout.close()
+file_out.close()
