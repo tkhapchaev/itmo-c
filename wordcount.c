@@ -55,4 +55,5 @@ int main(int argc, char * argv[]) {
   }
 
   fclose(file_in);
+  return 0;
 }
