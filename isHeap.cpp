@@ -23,4 +23,8 @@ int main() {
 
   if (isHeap) cout << "YES";
   else cout << "NO";
+
+  fclose(stdin);
+  fclose(stdout);
+  return 0;
 }
