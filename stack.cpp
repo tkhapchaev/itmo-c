@@ -48,4 +48,8 @@ int main() {
       addToStack(A);
     }
   }
+
+  fclose(stdin);
+  fclose(stdout);
+  return 0;
 }
