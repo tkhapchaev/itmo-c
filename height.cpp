@@ -30,4 +30,8 @@ int main() {
   search_for_height(1, 1);
   if (N > 0) std::cout << height << std::endl;
   else std::cout << 0 << std::endl;
+
+  fclose(stdin);
+  fclose(stdout);
+  return 0;
 }
