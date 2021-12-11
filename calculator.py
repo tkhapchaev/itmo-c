@@ -18,5 +18,5 @@ for i in range(len(string)):
 
 result = sum(plus) - sum(minus)
 print(result, file = file_out)
-
+file_in.close()
 file_out.close()
