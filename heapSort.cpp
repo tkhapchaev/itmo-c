@@ -54,4 +54,8 @@ int main() {
   for (int i = 0; i < N; i++) {
     cout << toSort[i] << " ";
   }
+
+  fclose(stdin);
+  fclose(stdout);
+  return 0;
 }
