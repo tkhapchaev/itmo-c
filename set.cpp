@@ -1,10 +1,11 @@
 #include <iostream>
 #include <vector>
+#define _HASH_TABLE_SIZE 1000000
 
-std::vector < std::vector < int >> HASH_TABLE(1000000);
+std::vector < std::vector < int >> HASH_TABLE(_HASH_TABLE_SIZE);
 
 int hash(int value) {
-  return abs(value) % 1000000;
+  return abs(value) % _HASH_TABLE_SIZE;
 }
 
 bool exists(int value) {
