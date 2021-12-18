@@ -3,65 +3,61 @@
 #include <string.h>
 #include <stdint.h>
 
-#define _NUMBER_OF_ARCHIVED_FILES 12
+#define _NUMBER_OF_ARCHIVED_FILES 0xC
 #define _MAX_ARCHIVE_SIZE 0xFF
-#define _START_TAGGING 23
-#define _SPLITTER_SIZE 6
+#define _START_TAGGING 0x17
+#define _SPLITTER_SIZE 0x6
+#define BYTE unsigned char
+#define _MAX_INT uint64_t
+_MAX_INT POINTER = 0;
+_MAX_INT to_count_sizes[_MAX_ARCHIVE_SIZE];
+_MAX_INT end_tagging = 0;
 
-uint64_t POINTER = 0;
-uint64_t to_count_sizes[_MAX_ARCHIVE_SIZE];
-uint64_t end_tagging = 0;
-
-uint64_t get_file_size(unsigned char file_name[]) {
+_MAX_INT get_file_size(BYTE file_name[]) {
   FILE * file = fopen(file_name, "rb");
-
   if (file == NULL) {
     printf("%s", "FATAL :: UNABLE TO OPEN THE FILE ");
-    return 0;
+    exit(1);
   }
 
   fseek(file, 0, SEEK_END);
-  uint64_t size = ftell(file);
-
+  _MAX_INT size = ftell(file);
   fclose(file);
   return size;
 }
 
-void add_file_to_archive(unsigned char archive_name[], unsigned char file_name[]) {
+void add_file_to_archive(BYTE archive_name[], BYTE file_name[]) {
   FILE * archive = fopen(archive_name, "ab");
   FILE * file = fopen(file_name, "rb");
-
+  _MAX_INT size = get_file_size(file_name);
+  BYTE * buffer = (BYTE * ) calloc(size, sizeof(BYTE));
   if (archive == NULL) {
     printf("%s", "FATAL :: UNABLE TO OPEN THE FILE ");
-    return;
+    exit(1);
   }
 
   if (file == NULL) {
     printf("%s", "FATAL :: UNABLE TO OPEN THE FILE ");
-    return;
+    exit(1);
   }
 
   if (POINTER == 0) fseek(archive, 0, 0);
   else fseek(archive, to_count_sizes[POINTER - 1], 0);
-
-  uint64_t size = get_file_size(file_name);
-  unsigned char * buffer = (unsigned char * ) calloc(size, sizeof(unsigned char));
-
   if (buffer == NULL) {
     printf("%s", "FATAL :: THE FILE IS TOO LARGE ");
-    return;
+    exit(1);
   }
 
-  for (uint64_t i = 0; i < size; i++) {
-    fread( & buffer[i], sizeof(unsigned char), 1, file);
+  for (_MAX_INT i = 0; i < size; i++) {
+    fread( & buffer[i], sizeof(BYTE), 1, file);
   }
 
-  for (uint64_t j = 0; j < size; j++) {
-    fwrite( & buffer[j], sizeof(unsigned char), 1, archive);
+  for (_MAX_INT j = 0; j < size; j++) {
+    fwrite( & buffer[j], sizeof(BYTE), 1, archive);
   }
 
-  unsigned char to_split[_SPLITTER_SIZE] = " $eof ";
-  fwrite(to_split, sizeof(unsigned char), _SPLITTER_SIZE, archive);
+  BYTE to_split[_SPLITTER_SIZE] = " $eof ";
+  fwrite(to_split, sizeof(BYTE), _SPLITTER_SIZE, archive);
   to_count_sizes[POINTER] = size;
   POINTER++;
   free(buffer);
@@ -70,63 +66,57 @@ void add_file_to_archive(unsigned char archive_name[], unsigned char file_name[]
   remove(file_name);
 }
 
-void init(unsigned char archive_name[], unsigned char value) {
+void init(BYTE archive_name[], BYTE value) {
   FILE * archive = fopen(archive_name, "wb");
-
   if (archive == NULL) {
     printf("%s", "FATAL :: UNABLE TO OPEN THE FILE ");
-    return;
+    exit(1);
   }
 
-  fwrite("ARCHIVED :: ", sizeof(unsigned char), 12, archive);
-  fwrite( & value, sizeof(unsigned char), 1, archive);
-  fwrite(" FILES :: ", sizeof(unsigned char), 10, archive);
-
+  fwrite("ARCHIVED :: ", sizeof(BYTE), 12, archive);
+  fwrite( & value, sizeof(BYTE), 1, archive);
+  fwrite(" FILES :: ", sizeof(BYTE), 10, archive);
   fseek(archive, 0, SEEK_END);
   fclose(archive);
 }
 
-void write_file_tag(unsigned char archive_name[], unsigned char file_name[]) {
+void write_file_tag(BYTE archive_name[], BYTE file_name[]) {
   FILE * archive = fopen(archive_name, "ab");
-
   if (archive == NULL) {
     printf("%s", "FATAL :: UNABLE TO OPEN THE FILE ");
-    return;
+    exit(1);
   }
 
-  fwrite(file_name, sizeof(unsigned char), strlen(file_name), archive);
-  fwrite(" :: ", sizeof(unsigned char), 4, archive);
+  fwrite(file_name, sizeof(BYTE), strlen(file_name), archive);
+  fwrite(" :: ", sizeof(BYTE), 4, archive);
   fclose(archive);
 }
 
-void show_archived_files_list(unsigned char archive_name[], int call_mode) {
+void show_archived_files_list(BYTE archive_name[], int call_mode) {
   FILE * archive = fopen(archive_name, "rb");
-  unsigned char archive_size;
-  unsigned char NAME_BUFFER[4096];
-  unsigned char bytes[4];
-
+  BYTE archive_size;
+  BYTE NAME_BUFFER[0x200];
+  BYTE chars[0x4];
+  _MAX_INT TAG_END = 0, i = 0;
   if (archive == NULL) {
-    printf("%s", "FATAL :: UNABLE TO OPEN THE FILE");
-    return;
+    printf("%s", "FATAL :: UNABLE TO OPEN THE FILE ");
+    exit(1);
   }
 
-  uint32_t TAG_END = 0, i = 0;
   fseek(archive, _NUMBER_OF_ARCHIVED_FILES, 0);
-  fread( & archive_size, sizeof(unsigned char), 1, archive);
+  fread( & archive_size, sizeof(BYTE), 1, archive);
   fseek(archive, _START_TAGGING, 0);
-
   while (TAG_END != archive_size) {
     fseek(archive, _START_TAGGING + i, 0);
-    bytes[0] = fgetc(archive);
-    bytes[1] = fgetc(archive);
-    bytes[2] = fgetc(archive);
-    bytes[3] = fgetc(archive);
-
-    if (bytes[0] == ' ' && bytes[1] == ':' && bytes[2] == ':' && bytes[3] == ' ') {
+    chars[0] = fgetc(archive);
+    chars[1] = fgetc(archive);
+    chars[2] = fgetc(archive);
+    chars[3] = fgetc(archive);
+    if (chars[0] == ' ' && chars[1] == ':' && chars[2] == ':' && chars[3] == ' ') {
       TAG_END++;
     }
 
-    NAME_BUFFER[i] = bytes[0];
+    NAME_BUFFER[i] = chars[0];
     i++;
     end_tagging = ftell(archive);
   }
@@ -135,56 +125,117 @@ void show_archived_files_list(unsigned char archive_name[], int call_mode) {
   fclose(archive);
 }
 
-void prepare_sizes_list(unsigned char archive_name[]) {
+void prepare_sizes_list(BYTE archive_name[]) {
   FILE * archive = fopen(archive_name, "ab");
-
   if (archive == NULL) {
     printf("%s", "FATAL :: UNABLE TO OPEN THE FILE ");
-    return;
+    exit(1);
   }
 
   show_archived_files_list(archive_name, 0);
   fseek(archive, end_tagging + 1, 0);
-  fwrite("SIZE OF :: ", sizeof(unsigned char), 11, archive);
+  fwrite("SIZE OF :: ", sizeof(BYTE), 11, archive);
   fclose(archive);
 }
 
-void write_file_size(unsigned char archive_name[], unsigned char file_name[]) {
+void write_file_size(BYTE archive_name[], BYTE file_name[]) {
   FILE * archive = fopen(archive_name, "ab");
+  BYTE file_size[0x14] = {
+    0
+  };
 
   if (archive == NULL) {
     printf("%s", "FATAL :: UNABLE TO OPEN THE FILE ");
-    return;
+    exit(1);
   }
 
-  unsigned char file_size[0x14] = {
-    0
-  };
-  itoa(get_file_size(file_name), file_size, 10);
-  fwrite(file_size, 20, 1, archive);
-  fwrite(" ", sizeof(unsigned char), 1, archive);
+  ulltoa(get_file_size(file_name), file_size, 0xA);
+  fwrite(file_size, 0x14, 1, archive);
+  fwrite(" ", sizeof(BYTE), 1, archive);
   fclose(archive);
 }
 
-void extract_files(unsigned char archive_name[]) {
+void extract_files(BYTE archive_name[]) {
   FILE * archive = fopen(archive_name, "rb");
-  unsigned char file_size[20] = {
+  _MAX_INT TAG_END = 0, seek = _START_TAGGING;
+  _MAX_INT tag_number = 0;
+  _MAX_INT char_in_tag = 0;
+  BYTE file_size[0x14] = {
     0
   };
-  unsigned char archive_size = 0;
+  _MAX_INT sizes[0x100] = {
+    0
+  };
+  BYTE archive_size = 0;
+  BYTE names[0x100][0x400];
+  BYTE buffer[0x1];
+  BYTE chars[0x4];
+  for (int i = 0; i < 0x100; i++) {
+    for (int j = 0; j < 0x400; j++) {
+      names[i][j] = 0;
+    }
+  }
 
   if (archive == NULL) {
-    printf("%s", "FATAL :: UNABLE TO OPEN THE FILE");
-    return;
+    printf("%s", "FATAL :: UNABLE TO OPEN THE FILE ");
+    exit(1);
   }
 
   fseek(archive, _NUMBER_OF_ARCHIVED_FILES, 0);
-  fread( & archive_size, sizeof(unsigned char), 1, archive);
+  fread( & archive_size, sizeof(BYTE), 1, archive);
   show_archived_files_list(archive_name, 0);
   fseek(archive, end_tagging + 0xB, 0);
+  for (int size_counter = 0; size_counter < archive_size; size_counter++) {
+    fread( & file_size, 20, 1, archive);
+    sizes[size_counter] = strtoull(file_size, NULL, 10);
+    _MAX_INT current_seek_position = ftell(archive);
+    fseek(archive, current_seek_position + 1, 0);
+  }
 
-  fread( & file_size, 20, 1, archive);
+  fseek(archive, _START_TAGGING, 0);
+  for (int i = 0; i < archive_size; i++) {
+    TAG_END = 0;
+    char_in_tag = 0;
+    while (TAG_END == 0) {
+      fseek(archive, seek, 0);
+      chars[0] = fgetc(archive);
+      chars[1] = fgetc(archive);
+      chars[2] = fgetc(archive);
+      chars[3] = fgetc(archive);
+      if (chars[0] == ' ' && chars[1] == ':' && chars[2] == ':' && chars[3] == ' ') {
+        seek = seek + 4;
+        tag_number++;
+        TAG_END = 1;
+        break;
+      }
+
+      names[tag_number][char_in_tag] = chars[0];
+      char_in_tag++;
+      seek++;
+    }
+  }
+
+  fseek(archive, end_tagging + 0xB + (0x15 * archive_size), 0);
+  for (int size_counter = 0; size_counter < archive_size; size_counter++) {
+    _MAX_INT current_seek_position = 0;
+    FILE * file = fopen(names[size_counter], "wb");
+    if (file == NULL) {
+      printf("%s", "FATAL :: UNABLE TO OPEN THE FILE ");
+      exit(1);
+    }
+
+    for (seek = 0; seek < sizes[size_counter]; seek++) {
+      fread( & buffer[0], sizeof(BYTE), 1, archive);
+      fwrite( & buffer[0], sizeof(BYTE), 1, file);
+      current_seek_position = ftell(archive);
+    }
+
+    fseek(archive, current_seek_position + 6, 0);
+    fclose(file);
+  }
+
   fclose(archive);
+  remove(archive_name);
 }
 
 int main(int argc, char * argv[]) {
@@ -229,6 +280,5 @@ int main(int argc, char * argv[]) {
 
     return 0;
   } else printf("FATAL :: UNKNOWN COMMAND ");
-    
   return 0;
 }
