@@ -2,16 +2,15 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdint.h>
-
 #define _NUMBER_OF_ARCHIVED_FILES 0xC
 #define _MAX_ARCHIVE_SIZE 0xFF
 #define _START_TAGGING 0x17
 #define _SPLITTER_SIZE 0x6
-#define BYTE unsigned char
 #define _MAX_INT uint64_t
+#define BYTE unsigned char
 _MAX_INT pointer = 0;
-_MAX_INT to_count_sizes[_MAX_ARCHIVE_SIZE];
 _MAX_INT end_tagging = 0;
+_MAX_INT to_count_sizes[_MAX_ARCHIVE_SIZE];
 
 _MAX_INT get_file_size(BYTE file_name[]) {
   FILE * file = fopen(file_name, "rb");
