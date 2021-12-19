@@ -96,7 +96,7 @@ void show_archived_files_list(BYTE archive_name[], int call_mode) {
   BYTE archive_size;
   BYTE name_buffer[0x200];
   BYTE chars[0x4];
-  _MAX_INT TAG_END = 0, i = 0;
+  _MAX_INT tag_end = 0, i = 0;
   if (archive == NULL) {
     printf("%s", "FATAL :: UNABLE TO OPEN THE FILE");
     exit(0);
@@ -105,14 +105,14 @@ void show_archived_files_list(BYTE archive_name[], int call_mode) {
   fseek(archive, _NUMBER_OF_ARCHIVED_FILES, 0);
   fread( & archive_size, sizeof(BYTE), 1, archive);
   fseek(archive, _START_TAGGING, 0);
-  while (TAG_END != archive_size) {
+  while (tag_end != archive_size) {
     fseek(archive, _START_TAGGING + i, 0);
     chars[0] = fgetc(archive);
     chars[1] = fgetc(archive);
     chars[2] = fgetc(archive);
     chars[3] = fgetc(archive);
     if (chars[0] == ' ' && chars[1] == ':' && chars[2] == ':' && chars[3] == ' ') {
-      TAG_END++;
+      tag_end++;
     }
 
     name_buffer[i] = chars[0];
@@ -156,7 +156,7 @@ void write_file_size(BYTE archive_name[], BYTE file_name[]) {
 
 void extract_files(BYTE archive_name[]) {
   FILE * archive = fopen(archive_name, "rb");
-  _MAX_INT TAG_END = 0, seek = _START_TAGGING;
+  _MAX_INT tag_end = 0, seek = _START_TAGGING;
   _MAX_INT tag_number = 0;
   _MAX_INT char_in_tag = 0;
   BYTE archive_size = 0;
@@ -193,9 +193,9 @@ void extract_files(BYTE archive_name[]) {
 
   fseek(archive, _START_TAGGING, 0);
   for (int i = 0; i < archive_size; i++) {
-    TAG_END = 0;
+    tag_end = 0;
     char_in_tag = 0;
-    while (TAG_END == 0) {
+    while (tag_end == 0) {
       fseek(archive, seek, 0);
       chars[0] = fgetc(archive);
       chars[1] = fgetc(archive);
@@ -204,7 +204,7 @@ void extract_files(BYTE archive_name[]) {
       if (chars[0] == ' ' && chars[1] == ':' && chars[2] == ':' && chars[3] == ' ') {
         seek = seek + 4;
         tag_number++;
-        TAG_END = 1;
+        tag_end = 1;
         break;
       }
 
