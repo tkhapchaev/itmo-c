@@ -45,7 +45,6 @@ int count_neighbours(char ** data, int current_position_x, int current_position_
     CI = 0;
   if (CD == -1)
     CD = max_width - 1;
-
   neighbours += data[RD][CD] == 1;
   neighbours += data[RD][current_position_y] == 1;
   neighbours += data[RD][CI] == 1;
@@ -54,7 +53,6 @@ int count_neighbours(char ** data, int current_position_x, int current_position_
   neighbours += data[RI][CD] == 1;
   neighbours += data[RI][current_position_y] == 1;
   neighbours += data[RI][CI] == 1;
-
   return neighbours;
 }
 
@@ -76,36 +74,34 @@ int main(int argc, char ** argv) {
   char ** data, ** previous, ** temporary;
   char * current_row;
   FILE * file_in;
-  int CMD = 1;
-  while (CMD < argc) {
-    if (strcmp(argv[CMD], "--input") == 0) {
-      CMD++;
-      strcpy(input, argv[CMD]);
+  int cmd = 1;
+  while (cmd < argc) {
+    if (strcmp(argv[cmd], "--input") == 0) {
+      cmd++;
+      strcpy(input, argv[cmd]);
     }
 
-    if (strcmp(argv[CMD], "--output") == 0) {
-      CMD++;
-      strcpy(output, argv[CMD]);
+    if (strcmp(argv[cmd], "--output") == 0) {
+      cmd++;
+      strcpy(output, argv[cmd]);
     }
-    if (strcmp(argv[CMD], "--max_iter") == 0) {
-      CMD++;
-      sscanf(argv[CMD], "%d", & max_iterations);
-    }
-
-    if (strcmp(argv[CMD], "--dump_freq") == 0) {
-      CMD++;
-      sscanf(argv[CMD], "%d", & dump_frequency);
+    if (strcmp(argv[cmd], "--max_iter") == 0) {
+      cmd++;
+      sscanf(argv[cmd], "%d", & max_iterations);
     }
 
-    CMD++;
+    if (strcmp(argv[cmd], "--dump_freq") == 0) {
+      cmd++;
+      sscanf(argv[cmd], "%d", & dump_frequency);
+    }
+
+    cmd++;
   }
 
   if (input[0] == 0 || output[0] == 0) return 0;
-
   _mkdir(output);
   file_in = fopen(input, "rb");
   if (file_in == NULL) return NULL;
-
   if (fread( & bitmap_header, 1, sizeof(bitmap_header), file_in) != sizeof(bitmap_header)) {
     fclose(file_in);
     return NULL;
@@ -155,7 +151,6 @@ int main(int argc, char ** argv) {
     unsigned int j;
     unsigned int k;
     unsigned int counter;
-
     for (j = 0; j < bitmap_info.Height && memcmp(data[j], previous[j], bitmap_info.Width) == 0; j++);
     if (j == bitmap_info.Height) {
       break;
@@ -188,11 +183,9 @@ int main(int argc, char ** argv) {
     }
 
     for (j = 0; j < bitmap_info.Height; j++) memcpy(previous[j], data[j], bitmap_info.Width);
-
     for (j = 0; j < bitmap_info.Height; j++) {
       for (k = 0; k < bitmap_info.Width; k++) {
         counter = count_neighbours(data, j, k, bitmap_info.Height, bitmap_info.Width);
-
         if (data[j][k] == 0) {
           if (counter == 3)
             temporary[j][k] = 1;
