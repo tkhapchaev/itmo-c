@@ -12,7 +12,6 @@ uint1024_t from_uint(unsigned int x) {
   };
   unsigned int * pointer = (unsigned int) & result;
   * pointer = x;
-
   return result;
 }
 
@@ -89,7 +88,6 @@ void printf_value(uint1024_t x) {
     }
 
     valueOut[j++] = highPart + '0';
-
     if (isZero) {
       break;
     }
@@ -133,7 +131,6 @@ int main() {
   uint1024_t d = subtr_op(b, a);
   uint1024_t e;
   uint1024_t f;
-
   printf_value(a);
   printf("\n");
   printf_value(b);
