@@ -5,7 +5,6 @@ int main(int argc, char * argv[]) {
   long wordsNumber = 0, bytesNumber = 0, linesNumber = 0, symbolsNumber = 0;
   int position = 0, isEmpty = 0, isUnknown = 1;
   char symbol;
-
   FILE * file_in = fopen(argv[2], "r");
   while ((symbol = fgetc(file_in)) != EOF) {
     symbolsNumber = symbolsNumber + 1;
