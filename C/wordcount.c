@@ -7,7 +7,6 @@ int main(int argc, char * argv[]) {
   char symbol;
 
   FILE * file_in = fopen(argv[2], "r");
-
   while ((symbol = fgetc(file_in)) != EOF) {
     symbolsNumber = symbolsNumber + 1;
     if (symbol == '\n')
@@ -15,14 +14,13 @@ int main(int argc, char * argv[]) {
   }
 
   if (symbolsNumber == 0) {
-    printf("%s", "ERROR: File is empty");
+    printf("%s", "FATAL :: FILE IS EMPTY");
     linesNumber = 0;
     isEmpty = 1;
   } else
     linesNumber = linesNumber + 1;
 
   fseek(file_in, 0, 0);
-
   while ((symbol = fgetc(file_in)) != EOF) {
     if (symbol == ' ' || symbol == '\n' || symbol == '\t')
       position = 0;
