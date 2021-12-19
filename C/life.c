@@ -31,13 +31,12 @@ typedef struct bitmap_info {
 }
 BITMAP_INFO_HEADER;
 
-int count_neighbours(char ** DATA, int current_position_x, int current_position_y, int max_height, int max_width) {
+int count_neighbours(char ** data, int current_position_x, int current_position_y, int max_height, int max_width) {
   int neighbours = 0;
   int RI = current_position_x + 1;
   int RD = current_position_x - 1;
   int CI = current_position_y + 1;
   int CD = current_position_y - 1;
-
   if (RI == max_height)
     RI = 0;
   if (RD == -1)
@@ -47,14 +46,14 @@ int count_neighbours(char ** DATA, int current_position_x, int current_position_
   if (CD == -1)
     CD = max_width - 1;
 
-  neighbours += DATA[RD][CD] == 1;
-  neighbours += DATA[RD][current_position_y] == 1;
-  neighbours += DATA[RD][CI] == 1;
-  neighbours += DATA[current_position_x][CD] == 1;
-  neighbours += DATA[current_position_x][CI] == 1;
-  neighbours += DATA[RI][CD] == 1;
-  neighbours += DATA[RI][current_position_y] == 1;
-  neighbours += DATA[RI][CI] == 1;
+  neighbours += data[RD][CD] == 1;
+  neighbours += data[RD][current_position_y] == 1;
+  neighbours += data[RD][CI] == 1;
+  neighbours += data[current_position_x][CD] == 1;
+  neighbours += data[current_position_x][CI] == 1;
+  neighbours += data[RI][CD] == 1;
+  neighbours += data[RI][current_position_y] == 1;
+  neighbours += data[RI][CI] == 1;
 
   return neighbours;
 }
@@ -64,10 +63,8 @@ int main(int argc, char ** argv) {
   int next_dump = 0;
   char palette[8];
   int palette_size;
-
   BITMAP_FILE_HEADER bitmap_header;
   BITMAP_INFO_HEADER bitmap_info;
-
   char input[128] = {
     0
   };
@@ -76,10 +73,9 @@ int main(int argc, char ** argv) {
   };
   int max_iterations = -1;
   int dump_frequency = 1;
-  char ** DATA, ** previous, ** temporary;
+  char ** data, ** previous, ** temporary;
   char * current_row;
   FILE * file_in;
-
   int CMD = 1;
   while (CMD < argc) {
     if (strcmp(argv[CMD], "--input") == 0) {
@@ -139,18 +135,17 @@ int main(int argc, char ** argv) {
   }
 
   current_row = malloc(current_string_length);
-  DATA = malloc(bitmap_info.Height * sizeof(int * ));
+  data = malloc(bitmap_info.Height * sizeof(int * ));
   previous = malloc(bitmap_info.Height * sizeof(int * ));
   temporary = malloc(bitmap_info.Height * sizeof(int * ));
   for (int i = 0; i < bitmap_info.Height; i++) {
-    DATA[i] = malloc(bitmap_info.Width);
+    data[i] = malloc(bitmap_info.Width);
     previous[i] = calloc(bitmap_info.Width, 1);
     temporary[i] = malloc(bitmap_info.Width);
     fseek(file_in, bitmap_header.OffsetBits + (bitmap_info.Height - i - 1) * current_string_length, SEEK_SET);
     fread(current_row, 1, current_string_length, file_in);
-
     for (int j = 0; j < bitmap_info.Width; j++) {
-      DATA[i][j] = (current_row[j / 8] >> (7 - j % 8)) & 1;
+      data[i][j] = (current_row[j / 8] >> (7 - j % 8)) & 1;
     }
   }
 
@@ -161,13 +156,13 @@ int main(int argc, char ** argv) {
     unsigned int k;
     unsigned int counter;
 
-    for (j = 0; j < bitmap_info.Height && memcmp(DATA[j], previous[j], bitmap_info.Width) == 0; j++);
+    for (j = 0; j < bitmap_info.Height && memcmp(data[j], previous[j], bitmap_info.Width) == 0; j++);
     if (j == bitmap_info.Height) {
       break;
     }
 
     for (j = 0, k = bitmap_info.Width; j < bitmap_info.Height && k == bitmap_info.Width; j++)
-      for (k = 0; k < bitmap_info.Width && DATA[j][k] == ' '; k++);
+      for (k = 0; k < bitmap_info.Width && data[j][k] == ' '; k++);
 
     if (j == bitmap_info.Height) {
       break;
@@ -179,11 +174,10 @@ int main(int argc, char ** argv) {
       fwrite( & bitmap_header, 1, sizeof(bitmap_header), file_in);
       fwrite( & bitmap_info, 1, sizeof(bitmap_info), file_in);
       fwrite(palette, 1, palette_size, file_in);
-
       for (int i = 0; i < bitmap_info.Height; i++) {
         memset(current_row, 0, current_string_length);
         for (int j = 0; j < bitmap_info.Width; j++) {
-          current_row[j / 8] |= DATA[bitmap_info.Height - 1 - i][j] << (7 - j % 8);
+          current_row[j / 8] |= data[bitmap_info.Height - 1 - i][j] << (7 - j % 8);
         }
 
         fwrite(current_row, 1, current_string_length, file_in);
@@ -193,20 +187,20 @@ int main(int argc, char ** argv) {
       next_dump += dump_frequency;
     }
 
-    for (j = 0; j < bitmap_info.Height; j++) memcpy(previous[j], DATA[j], bitmap_info.Width);
+    for (j = 0; j < bitmap_info.Height; j++) memcpy(previous[j], data[j], bitmap_info.Width);
 
     for (j = 0; j < bitmap_info.Height; j++) {
       for (k = 0; k < bitmap_info.Width; k++) {
-        counter = count_neighbours(DATA, j, k, bitmap_info.Height, bitmap_info.Width);
+        counter = count_neighbours(data, j, k, bitmap_info.Height, bitmap_info.Width);
 
-        if (DATA[j][k] == 0) {
+        if (data[j][k] == 0) {
           if (counter == 3)
             temporary[j][k] = 1;
           else
             temporary[j][k] = 0;
         }
 
-        if (DATA[j][k] == 1) {
+        if (data[j][k] == 1) {
           if (counter < 2 || counter > 3)
             temporary[j][k] = 0;
           else
@@ -215,17 +209,17 @@ int main(int argc, char ** argv) {
       }
     }
 
-    for (j = 0; j < bitmap_info.Height; j++) memcpy(DATA[j], temporary[j], bitmap_info.Width);
+    for (j = 0; j < bitmap_info.Height; j++) memcpy(data[j], temporary[j], bitmap_info.Width);
     current_iteration++;
   }
 
   for (int i = 0; i < bitmap_info.Height; i++) {
-    free(DATA[i]);
+    free(data[i]);
     free(previous[i]);
     free(temporary[i]);
   }
 
-  free(DATA);
+  free(data);
   free(previous);
   free(temporary);
   free(current_row);
