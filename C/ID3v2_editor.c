@@ -26,7 +26,6 @@ unsigned int decode_size(unsigned char * array_size) {
   size_part_c <<= 7;
   size_part_b <<= 14;
   size_part_a <<= 21;
-
   return size_part_a | size_part_b | size_part_c | size_part_d;
 }
 
@@ -43,7 +42,6 @@ char to_CP1251(wchar_t byte_order_mark, wchar_t byte) {
   }
 
   if (byte < 128) return byte;
-
   if (byte >= 0x410 && byte <= 0x44F) {
     byte -= 0x410;
     byte += 0xC0;
@@ -190,7 +188,6 @@ void set_new_property_value(FILE * file_in, char * property_name, unsigned char 
   * pointer++ = 0;
   if (ascii_only) {
     * pointer++ = 0;
-
     if (strcmp(property_name, "COMM") == 0) {
       * pointer++ = 'e';
       * pointer++ = 'n';
