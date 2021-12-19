@@ -23,7 +23,6 @@ unsigned int decode_size(unsigned char * array_size) {
   unsigned int size_part_b = array_size[1];
   unsigned int size_part_c = array_size[2];
   unsigned int size_part_d = array_size[3];
-
   size_part_c <<= 7;
   size_part_b <<= 14;
   size_part_a <<= 21;
@@ -51,14 +50,13 @@ char to_CP1251(wchar_t byte_order_mark, wchar_t byte) {
     return byte;
   }
 
-  if (byte == 0x401) return '¨';
-  if (byte == 0x451) return '¸';
+  if (byte == 0x401) return 'Ё';
+  if (byte == 0x451) return 'Е';
   return '?';
 }
 
 void show_frame(ID3_frame * frame, char * frame_data) {
   unsigned int frame_size = decode_size(frame -> size);
-
   for (int i = 0; i < sizeof(frame -> ID); i++) {
     printf("%c", frame -> ID[i]);
   }
@@ -99,12 +97,10 @@ void get_property(FILE * file_in, char * property_name) {
   ID3_header header;
   ID3_frame frame;
   fread( & header, sizeof(ID3_header), 1, file_in);
-
   int header_size = decode_size(header.size);
   unsigned int frame_size;
   unsigned char * frame_data;
   int frame_end = 0;
-
   while (ftell(file_in) < header_size) {
     fread( & frame, sizeof(ID3_frame), 1, file_in);
     frame_size = decode_size(frame.size);
@@ -121,14 +117,14 @@ void get_property(FILE * file_in, char * property_name) {
   }
 
   if (!frame_end) {
-    printf("FATAL :: PROPERTY NOT FOUND \n");
+    printf("FATAL :: PROPERTY NOT FOUND");
   }
 }
 
 wchar_t CP1251_to_wchar(unsigned char byte) {
   if (byte < 128) return byte;
-  if (byte == '¸') return 0x451;
-  if (byte == '¨') return 0x401;
+  if (byte == 'Е') return 0x451;
+  if (byte == 'Ё') return 0x401;
   if (byte >= 0xC0 && byte <= 0xFF) return byte - 0xC0 + 0x410;
   return '?';
 }
@@ -143,7 +139,6 @@ void set_new_property_value(FILE * file_in, char * property_name, unsigned char 
   unsigned char * pointer = headerdata + sizeof(ID3_header);
   unsigned int frame_size;
   unsigned char * framedata;
-
   while (ftell(file_in) < header_size) {
     fread( & frame, sizeof(ID3_frame), 1, file_in);
     frame_size = decode_size(frame.size);
@@ -181,7 +176,7 @@ void set_new_property_value(FILE * file_in, char * property_name, unsigned char 
   }
 
   if ((pointer - headerdata) + framesize + sizeof(ID3_frame) > header_size + sizeof(ID3_header)) {
-    printf("FATAL :: NOT ENOUGH SPACE TO SAVE NEW PROPERTY VALUE \n");
+    printf("FATAL :: NOT ENOUGH SPACE TO SAVE NEW PROPERTY VALUE");
     return;
   }
 
@@ -236,7 +231,6 @@ void show(FILE * file_in) {
   int header_size = decode_size(header.size);
   unsigned int frame_size;
   unsigned char * frame_data;
-
   while (ftell(file_in) < header_size) {
     fread( & frame, sizeof(ID3_frame), 1, file_in);
     frame_size = decode_size(frame.size);
@@ -250,8 +244,7 @@ void show(FILE * file_in) {
 
 int main(int argc, char * argv[]) {
   setlocale(LC_ALL, "Russian");
-
-  int CMD = -1;
+  int cmd = -1;
   char filepath[128] = {
     0
   };
@@ -263,7 +256,7 @@ int main(int argc, char * argv[]) {
   };
 
   if (argc < 3) {
-    printf("FATAL :: WRONG PARAMETERS \n");
+    printf("FATAL :: WRONG PARAMETERS");
     return 0;
   }
 
@@ -273,16 +266,16 @@ int main(int argc, char * argv[]) {
     }
 
     if (strcmp(argv[i], "--show") == 0) {
-      CMD = 0;
+      cmd = 0;
     }
     if (memcmp(argv[i], "--get=", 6) == 0) {
       strcpy(prop_name, & argv[i][6]);
-      CMD = 1;
+      cmd = 1;
     }
 
     if (memcmp(argv[i], "--set=", 6) == 0) {
       strcpy(prop_name, & argv[i][6]);
-      CMD = 2;
+      cmd = 2;
     }
 
     if (memcmp(argv[i], "--value=", 8) == 0) {
@@ -291,24 +284,24 @@ int main(int argc, char * argv[]) {
   }
 
   if (filepath[0] == 0) {
-    printf("FATAL :: NO INPUT FILE \n");
+    printf("FATAL :: NO INPUT FILE");
     return 0;
   }
 
   FILE * file_in = fopen(filepath, "r+b");
   if (file_in == NULL) {
-    printf("FATAL :: CAN'T OPEN FILE %s\n", filepath);
+    printf("FATAL :: CAN'T OPEN FILE %s", filepath);
     return 0;
   }
 
-  switch (CMD) {
+  switch (cmd) {
   case 0:
     show(file_in);
 
     break;
   case 1:
     if (prop_name[0] == 0) {
-      printf("FATAL :: NO PROPERTY \n");
+      printf("FATAL :: NO PROPERTY");
     } else {
       get_property(file_in, prop_name);
     }
@@ -316,12 +309,12 @@ int main(int argc, char * argv[]) {
     break;
   case 2:
     if (prop_name[0] == 0) {
-      printf("FATAL :: NO PROPERTY \n");
+      printf("FATAL :: NO PROPERTY");
       break;
     }
 
     if (prop_value[0] == 0) {
-      printf("FATAL :: NO VALUE \n");
+      printf("FATAL :: NO VALUE");
       break;
     }
 
