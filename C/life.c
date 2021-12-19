@@ -4,6 +4,7 @@
 #include <stdlib.h>
 #define TWO_BYTES unsigned short
 #define FOUR_BYTES unsigned long
+
 #pragma pack(push, 1)
 typedef struct bitmap_header {
   TWO_BYTES Type;
