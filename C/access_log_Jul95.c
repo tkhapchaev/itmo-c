@@ -77,18 +77,18 @@ int main() {
   char string[550];
   char * toFind;
   char * bracketPosition;
-  char * __pointToString;
-  char ERROR_A[10] = "\" 500 ";
-  char ERROR_B[10] = "\" 501 ";
-  char ERROR_C[10] = "\" 502 ";
-  char ERROR_D[10] = "\" 503 ";
-  char ERROR_E[10] = "\" 504 ";
-  char ERROR_F[10] = "\" 505 ";
-  char ERROR_G[10] = "\" 506 ";
-  char ERROR_H[10] = "\" 507 ";
-  char ERROR_I[10] = "\" 508 ";
-  char ERROR_J[10] = "\" 510 ";
-  char ERROR_K[10] = "\" 511 ";
+  char * __stringPointer;
+  char error_0[10] = "\" 500 ";
+  char error_1[10] = "\" 501 ";
+  char error_2[10] = "\" 502 ";
+  char error_3[10] = "\" 503 ";
+  char error_4[10] = "\" 504 ";
+  char error_5[10] = "\" 505 ";
+  char error_6[10] = "\" 506 ";
+  char error_7[10] = "\" 507 ";
+  char error_8[10] = "\" 508 ";
+  char error_10[10] = "\" 510 ";
+  char error_11[10] = "\" 511 ";
   while ((symbol = fgetc(file_in)) != EOF) {
     if (symbol == '\n') toCountLines++;
   }
@@ -97,27 +97,27 @@ int main() {
   scanf("%d", & seconds);
   if (seconds <= 0) {
     printf("-----------------------------------------------------------------------------------------------------------------------\n");
-    printf("FATAL :: THE NUMBER IS INVALID \n");
+    printf("Error :: the number is invalid.\n");
     __continue = 0;
   }
 
   printf("-----------------------------------------------------------------------------------------------------------------------\n");
-  printf("5XX -- Server errors -- list: \n");
+  printf("5XX -- Server errors -- list:\n");
   printf("-----------------------------------------------------------------------------------------------------------------------\n");
   for (int i = 0; i < toCountLines; i++) {
     int __flag = 0;
-    __pointToString = fgets(string, 550, file_in);
-    if ((toFind = strstr(__pointToString, ERROR_A)) != NULL) __flag++;
-    if ((toFind = strstr(__pointToString, ERROR_B)) != NULL) __flag++;
-    if ((toFind = strstr(__pointToString, ERROR_C)) != NULL) __flag++;
-    if ((toFind = strstr(__pointToString, ERROR_D)) != NULL) __flag++;
-    if ((toFind = strstr(__pointToString, ERROR_E)) != NULL) __flag++;
-    if ((toFind = strstr(__pointToString, ERROR_F)) != NULL) __flag++;
-    if ((toFind = strstr(__pointToString, ERROR_G)) != NULL) __flag++;
-    if ((toFind = strstr(__pointToString, ERROR_H)) != NULL) __flag++;
-    if ((toFind = strstr(__pointToString, ERROR_I)) != NULL) __flag++;
-    if ((toFind = strstr(__pointToString, ERROR_J)) != NULL) __flag++;
-    if ((toFind = strstr(__pointToString, ERROR_K)) != NULL) __flag++;
+    __stringPointer = fgets(string, 550, file_in);
+    if ((toFind = strstr(__stringPointer, error_0)) != NULL) __flag++;
+    if ((toFind = strstr(__stringPointer, error_1)) != NULL) __flag++;
+    if ((toFind = strstr(__stringPointer, error_2)) != NULL) __flag++;
+    if ((toFind = strstr(__stringPointer, error_3)) != NULL) __flag++;
+    if ((toFind = strstr(__stringPointer, error_4)) != NULL) __flag++;
+    if ((toFind = strstr(__stringPointer, error_5)) != NULL) __flag++;
+    if ((toFind = strstr(__stringPointer, error_6)) != NULL) __flag++;
+    if ((toFind = strstr(__stringPointer, error_7)) != NULL) __flag++;
+    if ((toFind = strstr(__stringPointer, error_8)) != NULL) __flag++;
+    if ((toFind = strstr(__stringPointer, error_10)) != NULL) __flag++;
+    if ((toFind = strstr(__stringPointer, error_11)) != NULL) __flag++;
     if (__flag > 0) {
       if (i != toCountLines - 1) {
         toCountErrors++;
@@ -125,7 +125,7 @@ int main() {
         listPlace++;
       } else if (i == toCountLines - 1) {
         toCountErrors++;
-        printf("%d. %s \n", listPlace, string);
+        printf("%d. %s\n", listPlace, string);
         listPlace++;
       }
     }
@@ -133,15 +133,15 @@ int main() {
 
   fseek(file_in, 0, 0);
   printf("-----------------------------------------------------------------------------------------------------------------------\n");
-  printf("5XX -- Server errors -- counted: %d \n", toCountErrors);
+  printf("5XX -- Server errors -- counted: %d.\n", toCountErrors);
   printf("-----------------------------------------------------------------------------------------------------------------------\n");
   if (__continue != 0) {
     for (int i = 0; i < toCountLines; i++) {
-      __pointToString = fgets(string, 550, file_in);
-      bracketPosition = strchr(__pointToString, '[');
+      __stringPointer = fgets(string, 550, file_in);
+      bracketPosition = strchr(__stringPointer, '[');
       if (bracketPosition != NULL) {
         line++;
-        int bracketPositionInt = bracketPosition - __pointToString;
+        int bracketPositionInt = bracketPosition - __stringPointer;
         int dayTens = string[bracketPositionInt + 1] - '0';
         int dayUnits = string[bracketPositionInt + 2] - '0';
         int daySummary = 10 * dayTens + dayUnits;
@@ -179,14 +179,14 @@ int main() {
       }
     }
 
-    printf("Max number of requests in %d seconds -- %d \n", seconds, max);
-    printf("%s%.2i%s%.2i%s%.2i%s%.2i%s", "FROM: [", maxDateFrom[0], "/Jul/1995:", maxDateFrom[1], ":", maxDateFrom[2], ":", maxDateFrom[3], " -0400] \n");
-    printf("%s%.2i%s%.2i%s%.2i%s%.2i%s", "TO: [", maxDateTo[0], "/Jul/1995:", maxDateTo[1], ":", maxDateTo[2], ":", maxDateTo[3], " -0400] \n");
+    printf("Max number of requests in %d seconds -- %d.\n", seconds, max);
+    printf("%s%.2i%s%.2i%s%.2i%s%.2i%s", "From: [", maxDateFrom[0], "/Jul/1995:", maxDateFrom[1], ":", maxDateFrom[2], ":", maxDateFrom[3], " -0400]\n");
+    printf("%s%.2i%s%.2i%s%.2i%s%.2i%s", "To: [", maxDateTo[0], "/Jul/1995:", maxDateTo[1], ":", maxDateTo[2], ":", maxDateTo[3], " -0400]\n");
   }
 
   stop = clock();
   if (__continue > 0) printf("-----------------------------------------------------------------------------------------------------------------------\n");
-  printf("Process finished in %d seconds \n", (int)(stop - start) / CLK_TCK);
+  printf("Process finished in %d seconds.\n", (int)(stop - start) / CLK_TCK);
   printf("-----------------------------------------------------------------------------------------------------------------------\n");
   fclose(file_in);
   return 0;
