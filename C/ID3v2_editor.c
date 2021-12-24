@@ -115,7 +115,7 @@ void get_property(FILE * file_in, char * property_name) {
   }
 
   if (!frame_end) {
-    printf("FATAL :: PROPERTY NOT FOUND");
+    printf("Error :: property not found.");
   }
 }
 
@@ -174,7 +174,7 @@ void set_new_property_value(FILE * file_in, char * property_name, unsigned char 
   }
 
   if ((pointer - headerdata) + framesize + sizeof(ID3_frame) > header_size + sizeof(ID3_header)) {
-    printf("FATAL :: NOT ENOUGH SPACE TO SAVE NEW PROPERTY VALUE");
+    printf("Error :: not enough space to save new property value.");
     return;
   }
 
@@ -253,7 +253,7 @@ int main(int argc, char * argv[]) {
   };
 
   if (argc < 3) {
-    printf("FATAL :: WRONG PARAMETERS");
+    printf("Error :: wrong parameters.");
     return 0;
   }
 
@@ -281,13 +281,13 @@ int main(int argc, char * argv[]) {
   }
 
   if (filepath[0] == 0) {
-    printf("FATAL :: NO INPUT FILE");
+    printf("Error :: can't open input file.");
     return 0;
   }
 
   FILE * file_in = fopen(filepath, "r+b");
   if (file_in == NULL) {
-    printf("FATAL :: CAN'T OPEN FILE %s", filepath);
+    printf("Error :: can't open file %s.", filepath);
     return 0;
   }
 
@@ -298,7 +298,7 @@ int main(int argc, char * argv[]) {
     break;
   case 1:
     if (prop_name[0] == 0) {
-      printf("FATAL :: NO PROPERTY");
+      printf("Error :: no property.");
     } else {
       get_property(file_in, prop_name);
     }
@@ -306,12 +306,12 @@ int main(int argc, char * argv[]) {
     break;
   case 2:
     if (prop_name[0] == 0) {
-      printf("FATAL :: NO PROPERTY");
+      printf("Error :: no property.");
       break;
     }
 
     if (prop_value[0] == 0) {
-      printf("FATAL :: NO VALUE");
+      printf("Error :: no value.");
       break;
     }
 
