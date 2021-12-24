@@ -13,7 +13,7 @@ int main(int argc, char * argv[]) {
   }
 
   if (symbolsNumber == 0) {
-    printf("%s", "FATAL :: FILE IS EMPTY");
+    printf("%s", "Error :: file is empty.");
     linesNumber = 0;
     isEmpty = 1;
   } else
@@ -47,7 +47,7 @@ int main(int argc, char * argv[]) {
     }
 
     if (isUnknown == 1) {
-      printf("%s", "FATAL :: UNKNOWN COMMAND");
+      printf("%s", "Error :: unknown command.");
     }
   }
 
