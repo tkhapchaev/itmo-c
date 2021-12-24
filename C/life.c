@@ -108,7 +108,7 @@ int main(int argc, char ** argv) {
   }
 
   if (bitmap_header.Type != 0x4D42) {
-    printf("FATAL :: %s IS NOT A BMP-FILE\n", input);
+    printf("Error :: %s is not a .bmp file.\n", input);
     fclose(file_in);
     return NULL;
   }
@@ -117,14 +117,14 @@ int main(int argc, char ** argv) {
   palette_size = bitmap_header.OffsetBits - ftell(file_in);
   fread(palette, 1, palette_size, file_in);
   if (bitmap_info.Compression != 0) {
-    printf("FATAL :: COMPRESSION IS NOT SUPPORTED\n");
+    printf("Error :: compression is not supported.\n");
     fclose(file_in);
     return NULL;
   }
 
   int current_string_length = (bitmap_header.Size - bitmap_header.OffsetBits) / bitmap_info.Height;
   if (bitmap_info.BitCount != 1) {
-    printf("FATAL :: NOT A MONOCHROME IMAGE\n");
+    printf("Error :: not a monochrome image.\n");
     fclose(file_in);
     return NULL;
 
