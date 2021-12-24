@@ -15,7 +15,7 @@ _MAX_INT to_count_sizes[_MAX_ARCHIVE_SIZE];
 _MAX_INT get_file_size(BYTE file_name[]) {
   FILE * file = fopen(file_name, "rb");
   if (file == NULL) {
-    printf("%s", "FATAL :: UNABLE TO OPEN THE FILE");
+    printf("%s", "Error :: unable to open the file.\n");
     exit(0);
   }
 
@@ -31,19 +31,19 @@ void add_file_to_archive(BYTE archive_name[], BYTE file_name[]) {
   _MAX_INT size = get_file_size(file_name);
   BYTE * buffer = (BYTE * ) calloc(size, sizeof(BYTE));
   if (archive == NULL) {
-    printf("%s", "FATAL :: UNABLE TO OPEN THE FILE");
+    printf("%s", "Error :: unable to open the file.\n");
     exit(0);
   }
 
   if (file == NULL) {
-    printf("%s", "FATAL :: UNABLE TO OPEN THE FILE");
+    printf("%s", "Error :: unable to open the file.\n");
     exit(0);
   }
 
   if (pointer == 0) fseek(archive, 0, 0);
   else fseek(archive, to_count_sizes[pointer - 1], 0);
   if (buffer == NULL) {
-    printf("%s", "FATAL :: THE FILE IS TOO LARGE");
+    printf("%s", "Error :: the file is too large.\n");
     exit(0);
   }
 
@@ -68,7 +68,7 @@ void add_file_to_archive(BYTE archive_name[], BYTE file_name[]) {
 void init(BYTE archive_name[], BYTE value) {
   FILE * archive = fopen(archive_name, "wb");
   if (archive == NULL) {
-    printf("%s", "FATAL :: UNABLE TO OPEN THE FILE");
+    printf("%s", "Error :: unable to open the file.\n");
     exit(0);
   }
 
@@ -82,7 +82,7 @@ void init(BYTE archive_name[], BYTE value) {
 void write_file_tag(BYTE archive_name[], BYTE file_name[]) {
   FILE * archive = fopen(archive_name, "ab");
   if (archive == NULL) {
-    printf("%s", "FATAL :: UNABLE TO OPEN THE FILE");
+    printf("%s", "Error :: unable to open the file.\n");
     exit(0);
   }
 
@@ -98,7 +98,7 @@ void show_archived_files_list(BYTE archive_name[], int call_mode) {
   BYTE chars[0x4];
   _MAX_INT tag_end = 0, i = 0;
   if (archive == NULL) {
-    printf("%s", "FATAL :: UNABLE TO OPEN THE FILE");
+    printf("%s", "Error :: unable to open the file.\n");
     exit(0);
   }
 
@@ -127,7 +127,7 @@ void show_archived_files_list(BYTE archive_name[], int call_mode) {
 void prepare_sizes_list(BYTE archive_name[]) {
   FILE * archive = fopen(archive_name, "ab");
   if (archive == NULL) {
-    printf("%s", "FATAL :: UNABLE TO OPEN THE FILE");
+    printf("%s", "Error :: unable to open the file.\n");
     exit(0);
   }
 
@@ -144,7 +144,7 @@ void write_file_size(BYTE archive_name[], BYTE file_name[]) {
   };
 
   if (archive == NULL) {
-    printf("%s", "FATAL :: UNABLE TO OPEN THE FILE");
+    printf("%s", "Error :: unable to open the file.\n");
     exit(0);
   }
 
@@ -176,7 +176,7 @@ void extract_files(BYTE archive_name[]) {
   }
 
   if (archive == NULL) {
-    printf("%s", "FATAL :: UNABLE TO OPEN THE FILE");
+    printf("%s", "Error :: unable to open the file.\n");
     exit(0);
   }
 
@@ -219,7 +219,7 @@ void extract_files(BYTE archive_name[]) {
     _MAX_INT current_seek_position = 0;
     FILE * file = fopen(names[size_counter], "wb");
     if (file == NULL) {
-      printf("%s", "FATAL :: UNABLE TO OPEN THE FILE");
+      printf("%s", "Error :: unable to open the file.\n");
       exit(0);
     }
 
@@ -239,14 +239,14 @@ void extract_files(BYTE archive_name[]) {
 
 int main(int argc, char * argv[]) {
   if (argc < 4) {
-    printf("%s", "FATAL :: TOO FEW ARGUMENTS");
+    printf("%s", "Error :: too few arguments.\n");
     return 0;
   }
 
   if (strcmp(argv[1], "--file") == 0) {
     if (strcmp(argv[3], "--create") == 0) {
       if (argc < 5) {
-        printf("%s", "FATAL :: TOO FEW ARGUMENTS");
+        printf("%s", "Error :: too few arguments.\n");
         return 0;
       }
 
@@ -278,6 +278,6 @@ int main(int argc, char * argv[]) {
     }
 
     return 0;
-  } else printf("FATAL :: UNKNOWN COMMAND");
+  } else printf("Error :: unknown command.\n");
   return 0;
 }
