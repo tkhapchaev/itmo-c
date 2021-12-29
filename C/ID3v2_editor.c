@@ -63,28 +63,28 @@ void show_frame(ID3v2_frame * frame, char * frame_data) {
   int txt_size;
   if (frame_data[0] == 1) {
     txt_size = (frame_size - 3) / 2;
-    wchar_t * text = (wchar_t * )(frame_data + 1);
+    wchar_t * txt = (wchar_t * )(frame_data + 1);
 
     if (frame -> id[0] == 'C' && frame -> id[1] == 'O' && frame -> id[2] == 'M' && frame -> id[3] == 'M') {
       txt_size -= 2;
-      text = (wchar_t * )(frame_data + 5);
+      txt = (wchar_t * )(frame_data + 5);
     }
 
-    wchar_t bom = * text++;
+    wchar_t bom = * txt++;
     for (int i = 0; i < txt_size; i++) {
-      printf("%c", to_CP1251(bom, text[i]));
+      printf("%c", to_CP1251(bom, txt[i]));
     }
   } else {
     txt_size = frame_size - 1;
-    char * text = frame_data + 1;
+    char * txt = frame_data + 1;
 
     if (frame -> id[0] == 'C' && frame -> id[1] == 'O' && frame -> id[2] == 'M' && frame -> id[3] == 'M') {
       txt_size -= 4;
-      text = frame_data + 5;
+      txt = frame_data + 5;
     }
 
     for (int i = 0; i < txt_size; i++) {
-      printf("%c", text[i]);
+      printf("%c", txt[i]);
     }
   }
 
