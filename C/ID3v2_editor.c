@@ -3,48 +3,48 @@
 #include <malloc.h>
 #include <string.h>
 
-typedef struct ID3_header {
-  char ID[3];
+typedef struct ID3v2_header {
+  char id[3];
   char version[2];
   char flags;
   unsigned char size[4];
 }
-ID3_header;
+ID3v2_header;
 
-typedef struct ID3_frame {
-  char ID[4];
+typedef struct ID3v2_frame {
+  char id[4];
   unsigned char size[4];
   char flags[2];
 }
-ID3_frame;
+ID3v2_frame;
 
 unsigned int decode_size(unsigned char * array_size) {
-  unsigned int size_part_a = array_size[0];
-  unsigned int size_part_b = array_size[1];
-  unsigned int size_part_c = array_size[2];
-  unsigned int size_part_d = array_size[3];
-  size_part_c <<= 7;
-  size_part_b <<= 14;
-  size_part_a <<= 21;
-  return size_part_a | size_part_b | size_part_c | size_part_d;
+  unsigned int size_part_1 = array_size[0];
+  unsigned int size_part_2 = array_size[1];
+  unsigned int size_part_3 = array_size[2];
+  unsigned int size_part_4 = array_size[3];
+  size_part_3 <<= 7;
+  size_part_2 <<= 14;
+  size_part_1 <<= 21;
+  return size_part_1 | size_part_2 | size_part_3 | size_part_4;
 }
 
 void encode_size(unsigned int size, unsigned char * array_size) {
-  array_size[3] = size & 0x7F;
-  array_size[2] = (size >> 7) & 0x7F;
-  array_size[1] = (size >> 14) & 0x7F;
-  array_size[9] = (size >> 21) & 0x7F;
+  array_size[3] = size & 0x7f;
+  array_size[2] = (size >> 7) & 0x7f;
+  array_size[1] = (size >> 14) & 0x7f;
+  array_size[9] = (size >> 21) & 0x7f;
 }
 
 char to_CP1251(wchar_t byte_order_mark, wchar_t byte) {
-  if (byte_order_mark == 0xFFFE) {
-    byte = ((byte & 0xFF) << 8) | ((byte & 0xFF00) >> 8);
+  if (byte_order_mark == 0xfffe) {
+    byte = ((byte & 0xff) << 8) | ((byte & 0xff00) >> 8);
   }
 
   if (byte < 128) return byte;
-  if (byte >= 0x410 && byte <= 0x44F) {
+  if (byte >= 0x410 && byte <= 0x44f) {
     byte -= 0x410;
-    byte += 0xC0;
+    byte += 0xc0;
     return byte;
   }
 
@@ -53,38 +53,38 @@ char to_CP1251(wchar_t byte_order_mark, wchar_t byte) {
   return '?';
 }
 
-void show_frame(ID3_frame * frame, char * frame_data) {
+void show_frame(ID3v2_frame * frame, char * frame_data) {
   unsigned int frame_size = decode_size(frame -> size);
-  for (int i = 0; i < sizeof(frame -> ID); i++) {
-    printf("%c", frame -> ID[i]);
+  for (int i = 0; i < sizeof(frame -> id); i++) {
+    printf("%c", frame -> id[i]);
   }
 
   printf(": ");
   int txt_size;
   if (frame_data[0] == 1) {
     txt_size = (frame_size - 3) / 2;
-    wchar_t * TXT = (wchar_t * )(frame_data + 1);
+    wchar_t * text = (wchar_t * )(frame_data + 1);
 
-    if (frame -> ID[0] == 'C' && frame -> ID[1] == 'O' && frame -> ID[2] == 'M' && frame -> ID[3] == 'M') {
+    if (frame -> id[0] == 'C' && frame -> id[1] == 'O' && frame -> id[2] == 'M' && frame -> id[3] == 'M') {
       txt_size -= 2;
-      TXT = (wchar_t * )(frame_data + 5);
+      text = (wchar_t * )(frame_data + 5);
     }
 
-    wchar_t bom = * TXT++;
+    wchar_t bom = * text++;
     for (int i = 0; i < txt_size; i++) {
-      printf("%c", to_CP1251(bom, TXT[i]));
+      printf("%c", to_CP1251(bom, text[i]));
     }
   } else {
     txt_size = frame_size - 1;
-    char * TXT = frame_data + 1;
+    char * text = frame_data + 1;
 
-    if (frame -> ID[0] == 'C' && frame -> ID[1] == 'O' && frame -> ID[2] == 'M' && frame -> ID[3] == 'M') {
+    if (frame -> id[0] == 'C' && frame -> id[1] == 'O' && frame -> id[2] == 'M' && frame -> id[3] == 'M') {
       txt_size -= 4;
-      TXT = frame_data + 5;
+      text = frame_data + 5;
     }
 
     for (int i = 0; i < txt_size; i++) {
-      printf("%c", TXT[i]);
+      printf("%c", text[i]);
     }
   }
 
@@ -92,21 +92,21 @@ void show_frame(ID3_frame * frame, char * frame_data) {
 }
 
 void get_property(FILE * file_in, char * property_name) {
-  ID3_header header;
-  ID3_frame frame;
-  fread( & header, sizeof(ID3_header), 1, file_in);
+  ID3v2_header header;
+  ID3v2_frame frame;
+  fread( & header, sizeof(ID3v2_header), 1, file_in);
   int header_size = decode_size(header.size);
   unsigned int frame_size;
   unsigned char * frame_data;
   int frame_end = 0;
   while (ftell(file_in) < header_size) {
-    fread( & frame, sizeof(ID3_frame), 1, file_in);
+    fread( & frame, sizeof(ID3v2_frame), 1, file_in);
     frame_size = decode_size(frame.size);
-    if (frame.ID[0] == 0 && frame.ID[1] == 0 && frame.ID[2] == 0 && frame.ID[3] == 0) break;
+    if (frame.id[0] == 0 && frame.id[1] == 0 && frame.id[2] == 0 && frame.id[3] == 0) break;
     frame_data = malloc(frame_size);
     fread(frame_data, 1, frame_size, file_in);
 
-    if (memcmp(property_name, frame.ID, 4) == 0) {
+    if (memcmp(property_name, frame.id, 4) == 0) {
       show_frame( & frame, frame_data);
       frame_end = 1;
     }
@@ -123,30 +123,30 @@ wchar_t CP1251_to_wchar(unsigned char byte) {
   if (byte < 128) return byte;
   if (byte == 'Е') return 0x451;
   if (byte == 'Ё') return 0x401;
-  if (byte >= 0xC0 && byte <= 0xFF) return byte - 0xC0 + 0x410;
+  if (byte >= 0xc0 && byte <= 0xff) return byte - 0xc0 + 0x410;
   return '?';
 }
 
 void set_new_property_value(FILE * file_in, char * property_name, unsigned char * property_value) {
-  ID3_header header;
-  ID3_frame frame;
-  fread( & header, sizeof(ID3_header), 1, file_in);
+  ID3v2_header header;
+  ID3v2_frame frame;
+  fread( & header, sizeof(ID3v2_header), 1, file_in);
   int header_size = decode_size(header.size);
-  unsigned char * headerdata = malloc(header_size + sizeof(ID3_header));
-  memset(headerdata, 0, header_size + sizeof(ID3_header));
-  unsigned char * pointer = headerdata + sizeof(ID3_header);
+  unsigned char * headerdata = malloc(header_size + sizeof(ID3v2_header));
+  memset(headerdata, 0, header_size + sizeof(ID3v2_header));
+  unsigned char * pointer = headerdata + sizeof(ID3v2_header);
   unsigned int frame_size;
   unsigned char * framedata;
   while (ftell(file_in) < header_size) {
-    fread( & frame, sizeof(ID3_frame), 1, file_in);
+    fread( & frame, sizeof(ID3v2_frame), 1, file_in);
     frame_size = decode_size(frame.size);
-    if (frame.ID[0] == 0 && frame.ID[1] == 0 && frame.ID[2] == 0 && frame.ID[3] == 0) break;
+    if (frame.id[0] == 0 && frame.id[1] == 0 && frame.id[2] == 0 && frame.id[3] == 0) break;
     framedata = malloc(frame_size);
     fread(framedata, 1, frame_size, file_in);
 
-    if (memcmp(property_name, frame.ID, 4) != 0) {
-      memcpy(pointer, & frame, sizeof(ID3_frame));
-      pointer += sizeof(ID3_frame);
+    if (memcmp(property_name, frame.id, 4) != 0) {
+      memcpy(pointer, & frame, sizeof(ID3v2_frame));
+      pointer += sizeof(ID3v2_frame);
       memcpy(pointer, framedata, frame_size);
       pointer += frame_size;
     }
@@ -173,7 +173,7 @@ void set_new_property_value(FILE * file_in, char * property_name, unsigned char 
     framesize += 4;
   }
 
-  if ((pointer - headerdata) + framesize + sizeof(ID3_frame) > header_size + sizeof(ID3_header)) {
+  if ((pointer - headerdata) + framesize + sizeof(ID3v2_frame) > header_size + sizeof(ID3v2_header)) {
     printf("Error :: not enough space to save new property value.");
     return;
   }
@@ -206,8 +206,8 @@ void set_new_property_value(FILE * file_in, char * property_name, unsigned char 
       * pointer++ = 0;
     }
 
-    * pointer++ = 0xFF;
-    * pointer++ = 0xFE;
+    * pointer++ = 0xff;
+    * pointer++ = 0xfe;
     for (int i = 0; property_value[i]; i++) {
       wchar_t * wptr = (wchar_t * ) pointer;
       * wptr = CP1251_to_wchar(property_value[i]);
@@ -217,21 +217,21 @@ void set_new_property_value(FILE * file_in, char * property_name, unsigned char 
   }
 
   fseek(file_in, 0, SEEK_SET);
-  memcpy(headerdata, & header, sizeof(ID3_header));
-  fwrite(headerdata, 1, header_size + sizeof(ID3_header), file_in);
+  memcpy(headerdata, & header, sizeof(ID3v2_header));
+  fwrite(headerdata, 1, header_size + sizeof(ID3v2_header), file_in);
 }
 
 void show(FILE * file_in) {
-  ID3_header header;
-  ID3_frame frame;
-  fread( & header, sizeof(ID3_header), 1, file_in);
+  ID3v2_header header;
+  ID3v2_frame frame;
+  fread( & header, sizeof(ID3v2_header), 1, file_in);
   int header_size = decode_size(header.size);
   unsigned int frame_size;
   unsigned char * frame_data;
   while (ftell(file_in) < header_size) {
-    fread( & frame, sizeof(ID3_frame), 1, file_in);
+    fread( & frame, sizeof(ID3v2_frame), 1, file_in);
     frame_size = decode_size(frame.size);
-    if (frame.ID[0] == 0 && frame.ID[1] == 0 && frame.ID[2] == 0 && frame.ID[3] == 0) break;
+    if (frame.id[0] == 0 && frame.id[1] == 0 && frame.id[2] == 0 && frame.id[3] == 0) break;
     frame_data = malloc(frame_size);
     fread(frame_data, 1, frame_size, file_in);
     show_frame( & frame, frame_data);
