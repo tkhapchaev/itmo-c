@@ -3,48 +3,48 @@
 #include <stdio.h>
 #include <time.h>
 
-typedef struct requests_node {
+typedef struct TNode {
   int value;
   struct requests_node * next;
 }
-NODE;
+TNode;
 
-typedef struct requests_queue {
-  NODE * head;
-  NODE * tail;
+typedef struct TQueue {
+  TNode * head;
+  TNode * tail;
 }
-QUEUE;
+TQueue;
 
-QUEUE * push(QUEUE * __queue, int key) {
-  NODE * newRequest = malloc(sizeof(NODE));
+TQueue * push(TQueue * queue, int key) {
+  TNode * newRequest = malloc(sizeof(TNode));
   newRequest -> value = key;
   newRequest -> next = NULL;
-  if ((__queue -> head != NULL) && (__queue -> tail != NULL)) {
-    __queue -> tail -> next = newRequest;
-    __queue -> tail = newRequest;
+  if ((queue -> head != NULL) && (queue -> tail != NULL)) {
+    queue -> tail -> next = newRequest;
+    queue -> tail = newRequest;
   } else {
-    __queue -> head = __queue -> tail = newRequest;
+    queue -> head = queue -> tail = newRequest;
   }
 
-  return __queue;
+  return queue;
 }
 
-int show_head(QUEUE * __queue) {
+int show_head(TQueue * queue) {
   int key = 0;
-  if ((__queue -> head != NULL) && (__queue -> tail != NULL)) {
-    key = __queue -> head -> value;
+  if ((queue -> head != NULL) && (queue -> tail != NULL)) {
+    key = queue -> head -> value;
   }
 
   return key;
 }
 
-int pop(QUEUE * __queue) {
+int pop(TQueue * queue) {
   int key = 0;
-  NODE * oldRequest;
-  if (__queue -> head != NULL) {
-    oldRequest = __queue -> head;
+  TNode * oldRequest;
+  if (queue -> head != NULL) {
+    oldRequest = queue -> head;
     key = oldRequest -> value;
-    __queue -> head = __queue -> head -> next;
+    queue -> head = queue -> head -> next;
 
     free(oldRequest);
   }
@@ -56,17 +56,17 @@ int main() {
   clock_t start, stop;
   start = clock();
   FILE * file_in = fopen("access_log_Jul95", "r");
-  QUEUE requests;
+  TQueue requests;
   requests.head = NULL;
   requests.tail = NULL;
   int max = 0;
   int line = 0;
   int seconds = 0;
   int listPlace = 1;
-  int __continue = 1;
   int toCountLines = 1;
   int toCountErrors = 0;
   int toCountRequests = 0;
+  int continue_flag = 1;
   int maxDateTo[4] = {
     0
   };
@@ -77,7 +77,7 @@ int main() {
   char string[550];
   char * toFind;
   char * bracketPosition;
-  char * __stringPointer;
+  char * stringPointer;
   char error_0[10] = "\" 500 ";
   char error_1[10] = "\" 501 ";
   char error_2[10] = "\" 502 ";
@@ -98,27 +98,27 @@ int main() {
   if (seconds <= 0) {
     printf("-----------------------------------------------------------------------------------------------------------------------\n");
     printf("Error :: the number is invalid.\n");
-    __continue = 0;
+    continue_flag = 0;
   }
 
   printf("-----------------------------------------------------------------------------------------------------------------------\n");
   printf("5XX -- Server errors -- list:\n");
   printf("-----------------------------------------------------------------------------------------------------------------------\n");
   for (int i = 0; i < toCountLines; i++) {
-    int __flag = 0;
-    __stringPointer = fgets(string, 550, file_in);
-    if ((toFind = strstr(__stringPointer, error_0)) != NULL) __flag++;
-    if ((toFind = strstr(__stringPointer, error_1)) != NULL) __flag++;
-    if ((toFind = strstr(__stringPointer, error_2)) != NULL) __flag++;
-    if ((toFind = strstr(__stringPointer, error_3)) != NULL) __flag++;
-    if ((toFind = strstr(__stringPointer, error_4)) != NULL) __flag++;
-    if ((toFind = strstr(__stringPointer, error_5)) != NULL) __flag++;
-    if ((toFind = strstr(__stringPointer, error_6)) != NULL) __flag++;
-    if ((toFind = strstr(__stringPointer, error_7)) != NULL) __flag++;
-    if ((toFind = strstr(__stringPointer, error_8)) != NULL) __flag++;
-    if ((toFind = strstr(__stringPointer, error_10)) != NULL) __flag++;
-    if ((toFind = strstr(__stringPointer, error_11)) != NULL) __flag++;
-    if (__flag > 0) {
+    int found = 0;
+    stringPointer = fgets(string, 550, file_in);
+    if ((toFind = strstr(stringPointer, error_0)) != NULL) found++;
+    if ((toFind = strstr(stringPointer, error_1)) != NULL) found++;
+    if ((toFind = strstr(stringPointer, error_2)) != NULL) found++;
+    if ((toFind = strstr(stringPointer, error_3)) != NULL) found++;
+    if ((toFind = strstr(stringPointer, error_4)) != NULL) found++;
+    if ((toFind = strstr(stringPointer, error_5)) != NULL) found++;
+    if ((toFind = strstr(stringPointer, error_6)) != NULL) found++;
+    if ((toFind = strstr(stringPointer, error_7)) != NULL) found++;
+    if ((toFind = strstr(stringPointer, error_8)) != NULL) found++;
+    if ((toFind = strstr(stringPointer, error_10)) != NULL) found++;
+    if ((toFind = strstr(stringPointer, error_11)) != NULL) found++;
+    if (found > 0) {
       if (i != toCountLines - 1) {
         toCountErrors++;
         printf("%d. %s", listPlace, string);
@@ -135,13 +135,13 @@ int main() {
   printf("-----------------------------------------------------------------------------------------------------------------------\n");
   printf("5XX -- Server errors -- counted: %d.\n", toCountErrors);
   printf("-----------------------------------------------------------------------------------------------------------------------\n");
-  if (__continue != 0) {
+  if (continue_flag != 0) {
     for (int i = 0; i < toCountLines; i++) {
-      __stringPointer = fgets(string, 550, file_in);
-      bracketPosition = strchr(__stringPointer, '[');
+      stringPointer = fgets(string, 550, file_in);
+      bracketPosition = strchr(stringPointer, '[');
       if (bracketPosition != NULL) {
         line++;
-        int bracketPositionInt = bracketPosition - __stringPointer;
+        int bracketPositionInt = bracketPosition - stringPointer;
         int dayTens = string[bracketPositionInt + 1] - '0';
         int dayUnits = string[bracketPositionInt + 2] - '0';
         int daySummary = 10 * dayTens + dayUnits;
@@ -185,7 +185,7 @@ int main() {
   }
 
   stop = clock();
-  if (__continue > 0) printf("-----------------------------------------------------------------------------------------------------------------------\n");
+  if (continue_flag > 0) printf("-----------------------------------------------------------------------------------------------------------------------\n");
   printf("Process finished in %d seconds.\n", (int)(stop - start) / CLK_TCK);
   printf("-----------------------------------------------------------------------------------------------------------------------\n");
   fclose(file_in);
