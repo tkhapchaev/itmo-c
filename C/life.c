@@ -6,6 +6,7 @@
 #define BYTE unsigned char
 #define WORD uint16_t
 #define DWORD uint32_t
+
 #pragma pack(push, 1)
 typedef struct bitmap_header {
   WORD type;
