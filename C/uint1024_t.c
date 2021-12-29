@@ -1,8 +1,8 @@
 #include <stdio.h>
-#define TYPELEN 128
+#define _TYPE_LENGTH 128
 
 typedef struct {
-  unsigned char num[TYPELEN];
+  unsigned char num[_TYPE_LENGTH];
 }
 uint1024_t;
 
@@ -20,7 +20,7 @@ uint1024_t add_op(uint1024_t x, uint1024_t y) {
     0
   };
   int carry = 0;
-  for (int i = 0; i < TYPELEN; i++) {
+  for (int i = 0; i < _TYPE_LENGTH; i++) {
     unsigned int numberOne = x.num[i];
     unsigned int numberTwo = y.num[i];
     unsigned int summary = numberOne + numberTwo + carry;
@@ -39,7 +39,7 @@ uint1024_t subtr_op(uint1024_t x, uint1024_t y) {
   unsigned int numberOne;
   unsigned int numberTwo;
   unsigned int difference;
-  for (int i = 0; i < TYPELEN; i++) {
+  for (int i = 0; i < _TYPE_LENGTH; i++) {
     numberOne = x.num[i];
     numberTwo = y.num[i];
     difference = numberOne - numberTwo - carry;
@@ -55,7 +55,7 @@ uint1024_t mult_op(uint1024_t x, uint1024_t y) {
     0
   };
   unsigned int checkingBit;
-  for (int i = 0; i < TYPELEN * 8; i++) {
+  for (int i = 0; i < _TYPE_LENGTH * 8; i++) {
     int byteIndex = i >> 3;
     checkingBit = 1 << (i & 7);
     if ((x.num[byteIndex] & checkingBit) != 0) {
@@ -77,12 +77,12 @@ void printf_value(uint1024_t x) {
   while (1) {
     highPart = 0;
     isZero = 1;
-    for (int i = 0; i < TYPELEN; i++) {
-      lessPart = (highPart << 8) + x.num[TYPELEN - i - 1];
+    for (int i = 0; i < _TYPE_LENGTH; i++) {
+      lessPart = (highPart << 8) + x.num[_TYPE_LENGTH - i - 1];
       highPart = lessPart % 10;
-      x.num[TYPELEN - i - 1] = lessPart / 10;
+      x.num[_TYPE_LENGTH - i - 1] = lessPart / 10;
 
-      if (x.num[TYPELEN - i - 1] != 0) {
+      if (x.num[_TYPE_LENGTH - i - 1] != 0) {
         isZero = 0;
       }
     }
@@ -107,7 +107,7 @@ void scanf_value(uint1024_t * x) {
   uint1024_t ten = from_uint(10);
   uint1024_t digit;
   int symbol;
-  for (int i = 0; i < TYPELEN; i++)
+  for (int i = 0; i < _TYPE_LENGTH; i++)
     x -> num[i] = 0;
 
   while (1) {
