@@ -1,5 +1,5 @@
-![itmo_logo_horiz_transp_rus](https://user-images.githubusercontent.com/89847233/147673757-40376e7f-498c-4910-9a1b-b3ce85ea859c.png)
-____________________________________________________________________________________________________________________________________
+![ITMO_logo](https://user-images.githubusercontent.com/89847233/147676967-5810ea54-a4eb-4dfe-9648-789977890def.jpg)
+___________________________________________________________________________________________________________________
 ### `Алгоритмы и структуры данных`
 1. [a + b](https://github.com/tkhapchaev/ITMO-Programming/blob/Laboratory-Works/Algorithms%20and%20Data%20structures/aplusb.py)
 2. [a + b²](https://github.com/tkhapchaev/ITMO-Programming/blob/Laboratory-Works/Algorithms%20and%20Data%20structures/aplusbb.py)
