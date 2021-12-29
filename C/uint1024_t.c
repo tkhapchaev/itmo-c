@@ -2,7 +2,7 @@
 #define _TYPE_LENGTH 128
 
 typedef struct {
-  unsigned char num[_TYPE_LENGTH];
+  unsigned char byte_num[_TYPE_LENGTH];
 }
 uint1024_t;
 
@@ -21,10 +21,10 @@ uint1024_t add_op(uint1024_t x, uint1024_t y) {
   };
   int carry = 0;
   for (int i = 0; i < _TYPE_LENGTH; i++) {
-    unsigned int numberOne = x.num[i];
-    unsigned int numberTwo = y.num[i];
+    unsigned int numberOne = x.byte_num[i];
+    unsigned int numberTwo = y.byte_num[i];
     unsigned int summary = numberOne + numberTwo + carry;
-    result.num[i] = summary;
+    result.byte_num[i] = summary;
     carry = summary >> 8;
   }
 
@@ -40,10 +40,10 @@ uint1024_t subtr_op(uint1024_t x, uint1024_t y) {
   unsigned int numberTwo;
   unsigned int difference;
   for (int i = 0; i < _TYPE_LENGTH; i++) {
-    numberOne = x.num[i];
-    numberTwo = y.num[i];
+    numberOne = x.byte_num[i];
+    numberTwo = y.byte_num[i];
     difference = numberOne - numberTwo - carry;
-    result.num[i] = difference;
+    result.byte_num[i] = difference;
     carry = (difference >> 8) & 1;
   }
 
@@ -58,7 +58,7 @@ uint1024_t mult_op(uint1024_t x, uint1024_t y) {
   for (int i = 0; i < _TYPE_LENGTH * 8; i++) {
     int byteIndex = i >> 3;
     checkingBit = 1 << (i & 7);
-    if ((x.num[byteIndex] & checkingBit) != 0) {
+    if ((x.byte_num[byteIndex] & checkingBit) != 0) {
       result = add_op(result, y);
     }
 
@@ -78,11 +78,11 @@ void printf_value(uint1024_t x) {
     highPart = 0;
     isZero = 1;
     for (int i = 0; i < _TYPE_LENGTH; i++) {
-      lessPart = (highPart << 8) + x.num[_TYPE_LENGTH - i - 1];
+      lessPart = (highPart << 8) + x.byte_num[_TYPE_LENGTH - i - 1];
       highPart = lessPart % 10;
-      x.num[_TYPE_LENGTH - i - 1] = lessPart / 10;
+      x.byte_num[_TYPE_LENGTH - i - 1] = lessPart / 10;
 
-      if (x.num[_TYPE_LENGTH - i - 1] != 0) {
+      if (x.byte_num[_TYPE_LENGTH - i - 1] != 0) {
         isZero = 0;
       }
     }
@@ -108,7 +108,7 @@ void scanf_value(uint1024_t * x) {
   uint1024_t digit;
   int symbol;
   for (int i = 0; i < _TYPE_LENGTH; i++)
-    x -> num[i] = 0;
+    x -> byte_num[i] = 0;
 
   while (1) {
     symbol = getchar();
