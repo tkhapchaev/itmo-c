@@ -2,8 +2,8 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdint.h>
-#define _NUMBER_OF_ARCHIVED_FILES 0xC
-#define _MAX_ARCHIVE_SIZE 0xFF
+#define _NUMBER_OF_ARCHIVED_FILES 0xc
+#define _MAX_ARCHIVE_SIZE 0xff
 #define _START_TAGGING 0x17
 #define _SPLITTER_SIZE 0x6
 #define _MAX_INT uint64_t
@@ -148,7 +148,7 @@ void write_file_size(BYTE archive_name[], BYTE file_name[]) {
     exit(0);
   }
 
-  ulltoa(get_file_size(file_name), file_size, 0xA);
+  ulltoa(get_file_size(file_name), file_size, 0xa);
   fwrite(file_size, 0x14, 1, archive);
   fwrite(" ", sizeof(BYTE), 1, archive);
   fclose(archive);
@@ -183,7 +183,7 @@ void extract_files(BYTE archive_name[]) {
   fseek(archive, _NUMBER_OF_ARCHIVED_FILES, 0);
   fread( & archive_size, sizeof(BYTE), 1, archive);
   show_archived_files_list(archive_name, 0);
-  fseek(archive, end_tagging + 0xB, 0);
+  fseek(archive, end_tagging + 0xb, 0);
   for (int size_counter = 0; size_counter < archive_size; size_counter++) {
     fread( & file_size, 20, 1, archive);
     sizes[size_counter] = strtoull(file_size, NULL, 10);
@@ -214,7 +214,7 @@ void extract_files(BYTE archive_name[]) {
     }
   }
 
-  fseek(archive, end_tagging + 0xB + (0x15 * archive_size), 0);
+  fseek(archive, end_tagging + 0xb + (0x15 * archive_size), 0);
   for (int size_counter = 0; size_counter < archive_size; size_counter++) {
     _MAX_INT current_seek_position = 0;
     FILE * file = fopen(names[size_counter], "wb");
