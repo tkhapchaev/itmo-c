@@ -5,7 +5,7 @@
 
 typedef struct TNode {
   int value;
-  struct requests_node * next;
+  struct TNode * next_node;
 }
 TNode;
 
@@ -16,14 +16,14 @@ typedef struct TQueue {
 TQueue;
 
 TQueue * push(TQueue * queue, int key) {
-  TNode * newRequest = malloc(sizeof(TNode));
-  newRequest -> value = key;
-  newRequest -> next = NULL;
+  TNode * new_node = malloc(sizeof(TNode));
+  new_node -> value = key;
+  new_node -> next_node = NULL;
   if ((queue -> head != NULL) && (queue -> tail != NULL)) {
-    queue -> tail -> next = newRequest;
-    queue -> tail = newRequest;
+    queue -> tail -> next_node = new_node;
+    queue -> tail = new_node;
   } else {
-    queue -> head = queue -> tail = newRequest;
+    queue -> head = queue -> tail = new_node;
   }
 
   return queue;
@@ -40,13 +40,13 @@ int show_head(TQueue * queue) {
 
 int pop(TQueue * queue) {
   int key = 0;
-  TNode * oldRequest;
+  TNode * old_node;
   if (queue -> head != NULL) {
-    oldRequest = queue -> head;
-    key = oldRequest -> value;
-    queue -> head = queue -> head -> next;
+    old_node = queue -> head;
+    key = old_node -> value;
+    queue -> head = queue -> head -> next_node;
 
-    free(oldRequest);
+    free(old_node);
   }
 
   return key;
@@ -56,9 +56,9 @@ int main() {
   clock_t start, stop;
   start = clock();
   FILE * file_in = fopen("access_log_Jul95", "r");
-  TQueue requests;
-  requests.head = NULL;
-  requests.tail = NULL;
+  TQueue requests_queue;
+  requests_queue.head = NULL;
+  requests_queue.tail = NULL;
   int max = 0;
   int line = 0;
   int seconds = 0;
@@ -66,7 +66,7 @@ int main() {
   int toCountLines = 1;
   int toCountErrors = 0;
   int toCountRequests = 0;
-  int continue_flag = 1;
+  int continueFlag = 1;
   int maxDateTo[4] = {
     0
   };
@@ -98,7 +98,7 @@ int main() {
   if (seconds <= 0) {
     printf("-----------------------------------------------------------------------------------------------------------------------\n");
     printf("Error :: the number is invalid.\n");
-    continue_flag = 0;
+    continueFlag = 0;
   }
 
   printf("-----------------------------------------------------------------------------------------------------------------------\n");
@@ -135,7 +135,7 @@ int main() {
   printf("-----------------------------------------------------------------------------------------------------------------------\n");
   printf("5XX -- Server errors -- counted: %d.\n", toCountErrors);
   printf("-----------------------------------------------------------------------------------------------------------------------\n");
-  if (continue_flag != 0) {
+  if (continueFlag != 0) {
     for (int i = 0; i < toCountLines; i++) {
       stringPointer = fgets(string, 550, file_in);
       bracketPosition = strchr(stringPointer, '[');
@@ -155,24 +155,24 @@ int main() {
         int secondsUnits = string[bracketPositionInt + 20] - '0';
         int secondsSummary = 10 * secondsTens + secondsUnits;
         int result = (daySummary * 86400 + hoursSummary * 3600 + minutesSummary * 60 + secondsSummary) - 86400;
-        if (i == 0) push( & requests, result);
+        if (i == 0) push( & requests_queue, result);
         else if (i != 0) {
-          push( & requests, result);
+          push( & requests_queue, result);
           toCountRequests++;
           if (toCountRequests > max) {
             max = toCountRequests;
-            maxDateFrom[0] = ((show_head( & requests) / 86400) + 1);
-            maxDateFrom[1] = ((show_head( & requests) % 86400) / 3600);
-            maxDateFrom[2] = (((show_head( & requests) % 86400) % 3600) / 60);
-            maxDateFrom[3] = ((((show_head( & requests) % 86400) % 3600) % 60));
+            maxDateFrom[0] = ((show_head( & requests_queue) / 86400) + 1);
+            maxDateFrom[1] = ((show_head( & requests_queue) % 86400) / 3600);
+            maxDateFrom[2] = (((show_head( & requests_queue) % 86400) % 3600) / 60);
+            maxDateFrom[3] = ((((show_head( & requests_queue) % 86400) % 3600) % 60));
             maxDateTo[0] = daySummary;
             maxDateTo[1] = hoursSummary;
             maxDateTo[2] = minutesSummary;
             maxDateTo[3] = secondsSummary;
           }
 
-          while (abs(show_head( & requests) - result) >= seconds) {
-            pop( & requests);
+          while (abs(show_head( & requests_queue) - result) >= seconds) {
+            pop( & requests_queue);
             toCountRequests--;
           }
         }
@@ -185,7 +185,7 @@ int main() {
   }
 
   stop = clock();
-  if (continue_flag > 0) printf("-----------------------------------------------------------------------------------------------------------------------\n");
+  if (continueFlag > 0) printf("-----------------------------------------------------------------------------------------------------------------------\n");
   printf("Process finished in %d seconds.\n", (int)(stop - start) / CLK_TCK);
   printf("-----------------------------------------------------------------------------------------------------------------------\n");
   fclose(file_in);
