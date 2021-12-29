@@ -1,41 +1,37 @@
 #include <iostream>
 using namespace std;
 
-typedef struct myStack {
+typedef struct TStack {
   int number;
-  myStack * prev;
+  TStack * prev;
 }
-myStack;
+TStack;
 
-myStack * Stack;
-
+TStack * stack;
 void addToStack(int value) {
-  myStack * tmp;
-  tmp = new myStack();
+  TStack * tmp;
+  tmp = new TStack();
   tmp -> number = value;
-  tmp -> prev = Stack;
-  Stack = tmp;
+  tmp -> prev = stack;
+  stack = tmp;
 }
 
 void deleteFromStack() {
-  myStack * tmp;
-  tmp = Stack;
+  TStack * tmp;
+  tmp = stack;
   cout << tmp -> number << endl;
-  Stack = Stack -> prev;
+  stack = stack -> prev;
 }
 
 int main() {
   freopen("stack.in", "r", stdin);
   freopen("stack.out", "w", stdout);
-
   cin.tie(0);
   ios_base::sync_with_stdio(0);
-
   int N;
   cin >> N;
   char sign;
   int A;
-
   for (int i = 0; i < N; i++) {
     cin >> sign;
 
