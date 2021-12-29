@@ -139,10 +139,8 @@ int main() {
   printf("\n");
   printf_value(d);
   printf("\n");
-  printf("\n");
   scanf_value( & e);
   scanf_value( & f);
-  printf("\n");
   printf_value(add_op(e, f));
   printf("\n");
   printf_value(mult_op(e, f));
