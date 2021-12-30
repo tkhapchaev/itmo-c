@@ -126,7 +126,7 @@ void scanf_value(uint1024_t * x) {
 }
 
 int main() {
-  uint1024_t a = from_uint(12000010);
+  uint1024_t a = from_uint(1200000000000100);
   uint1024_t b = add_op(a, a);
   uint1024_t c = mult_op(a, a);
   uint1024_t d = subtr_op(b, a);
