@@ -1,8 +1,9 @@
 #include <stdio.h>
+#include <stdint.h>
 #define _TYPE_LENGTH 128
 
 typedef struct {
-  unsigned char byte_num[_TYPE_LENGTH];
+  uint8_t byte[_TYPE_LENGTH];
 }
 uint1024_t;
 
@@ -21,10 +22,10 @@ uint1024_t add_op(uint1024_t x, uint1024_t y) {
   };
   int carry = 0;
   for (int i = 0; i < _TYPE_LENGTH; i++) {
-    unsigned int numberOne = x.byte_num[i];
-    unsigned int numberTwo = y.byte_num[i];
-    unsigned int summary = numberOne + numberTwo + carry;
-    result.byte_num[i] = summary;
+    unsigned int number_1 = x.byte[i];
+    unsigned int number_2 = y.byte[i];
+    unsigned int summary = number_1 + number_2 + carry;
+    result.byte[i] = summary;
     carry = summary >> 8;
   }
 
@@ -36,14 +37,14 @@ uint1024_t subtr_op(uint1024_t x, uint1024_t y) {
     0
   };
   int carry = 0;
-  unsigned int numberOne;
-  unsigned int numberTwo;
+  unsigned int number_1;
+  unsigned int number_2;
   unsigned int difference;
   for (int i = 0; i < _TYPE_LENGTH; i++) {
-    numberOne = x.byte_num[i];
-    numberTwo = y.byte_num[i];
-    difference = numberOne - numberTwo - carry;
-    result.byte_num[i] = difference;
+    number_1 = x.byte[i];
+    number_2 = y.byte[i];
+    difference = number_1 - number_2 - carry;
+    result.byte[i] = difference;
     carry = (difference >> 8) & 1;
   }
 
@@ -58,7 +59,7 @@ uint1024_t mult_op(uint1024_t x, uint1024_t y) {
   for (int i = 0; i < _TYPE_LENGTH * 8; i++) {
     int byteIndex = i >> 3;
     checkingBit = 1 << (i & 7);
-    if ((x.byte_num[byteIndex] & checkingBit) != 0) {
+    if ((x.byte[byteIndex] & checkingBit) != 0) {
       result = add_op(result, y);
     }
 
@@ -69,7 +70,7 @@ uint1024_t mult_op(uint1024_t x, uint1024_t y) {
 }
 
 void printf_value(uint1024_t x) {
-  char valueOut[310];
+  char outputValue[310];
   unsigned char highPart;
   unsigned int lessPart;
   int isZero;
@@ -78,37 +79,37 @@ void printf_value(uint1024_t x) {
     highPart = 0;
     isZero = 1;
     for (int i = 0; i < _TYPE_LENGTH; i++) {
-      lessPart = (highPart << 8) + x.byte_num[_TYPE_LENGTH - i - 1];
+      lessPart = (highPart << 8) + x.byte[_TYPE_LENGTH - i - 1];
       highPart = lessPart % 10;
-      x.byte_num[_TYPE_LENGTH - i - 1] = lessPart / 10;
-
-      if (x.byte_num[_TYPE_LENGTH - i - 1] != 0) {
+      x.byte[_TYPE_LENGTH - i - 1] = lessPart / 10;
+      if (x.byte[_TYPE_LENGTH - i - 1] != 0) {
         isZero = 0;
       }
     }
 
-    valueOut[j++] = highPart + '0';
+    outputValue[j++] = highPart + '0';
     if (isZero) {
       break;
     }
   }
 
   for (int i = 0; i < j / 2; i++) {
-    char temporary = valueOut[i];
-    valueOut[i] = valueOut[j - i - 1];
-    valueOut[j - i - 1] = temporary;
+    char temporary = outputValue[i];
+    outputValue[i] = outputValue[j - i - 1];
+    outputValue[j - i - 1] = temporary;
   }
 
-  valueOut[j] = 0;
-  printf(valueOut);
+  outputValue[j] = 0;
+  printf(outputValue);
 }
 
 void scanf_value(uint1024_t * x) {
   uint1024_t ten = from_uint(10);
   uint1024_t digit;
   int symbol;
-  for (int i = 0; i < _TYPE_LENGTH; i++)
-    x -> byte_num[i] = 0;
+  for (int i = 0; i < _TYPE_LENGTH; i++) {
+    x -> byte[i] = 0;
+  }
 
   while (1) {
     symbol = getchar();
@@ -125,7 +126,7 @@ void scanf_value(uint1024_t * x) {
 }
 
 int main() {
-  uint1024_t a = from_uint(1200000010);
+  uint1024_t a = from_uint(12000010);
   uint1024_t b = add_op(a, a);
   uint1024_t c = mult_op(a, a);
   uint1024_t d = subtr_op(b, a);
