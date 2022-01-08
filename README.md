@@ -1,31 +1,6 @@
 ![ITMO_logo](https://user-images.githubusercontent.com/89847233/147676967-5810ea54-a4eb-4dfe-9648-789977890def.jpg)
 ___________________________________________________________________________________________________________________
-### `Алгоритмы и структуры данных`
-1. [a + b](https://github.com/tkhapchaev/ITMO-Programming/blob/Laboratory-Works/Algorithms%20and%20Data%20structures/aplusb.py)
-2. [a + b²](https://github.com/tkhapchaev/ITMO-Programming/blob/Laboratory-Works/Algorithms%20and%20Data%20structures/aplusbb.py)
-3. [Обход в ширину](https://github.com/tkhapchaev/ITMO-Programming/blob/Laboratory-Works/Algorithms%20and%20Data%20structures/turtle.cpp)
-4. [Cортировка вставками](https://github.com/tkhapchaev/ITMO-Programming/blob/Laboratory-Works/Algorithms%20and%20Data%20structures/insertionSort.py)
-5. [Знакомство с жителями Сортленда](https://github.com/tkhapchaev/ITMO-Programming/blob/Laboratory-Works/Algorithms%20and%20Data%20structures/sortland.py)
-6. [Сортировка слиянием](https://github.com/tkhapchaev/ITMO-Programming/blob/Laboratory-Works/Algorithms%20and%20Data%20structures/mergeSort.py)
-7. [Соревнования по бегу](https://github.com/tkhapchaev/ITMO-Programming/blob/Laboratory-Works/Algorithms%20and%20Data%20structures/race.py)
-8. [Число инверсий](https://github.com/tkhapchaev/ITMO-Programming/blob/Laboratory-Works/Algorithms%20and%20Data%20structures/inversions.py)
-9. [Быстрая сортировка](https://github.com/tkhapchaev/ITMO-Programming/blob/Laboratory-Works/Algorithms%20and%20Data%20structures/quicksort.py)
-10. [Анти-QuickSort](https://github.com/tkhapchaev/ITMO-Programming/blob/Laboratory-Works/Algorithms%20and%20Data%20structures/antiQuicksort.py)
-11. [Стек](https://github.com/tkhapchaev/ITMO-Programming/blob/Laboratory-Works/Algorithms%20and%20Data%20structures/stack.cpp)
-12. [Очередь](https://github.com/tkhapchaev/ITMO-Programming/blob/Laboratory-Works/Algorithms%20and%20Data%20structures/queue.cpp)
-13. [Целочисленный бинарный поиск](https://github.com/tkhapchaev/ITMO-Programming/blob/Laboratory-Works/Algorithms%20and%20Data%20structures/binarySearch.cpp)
-14. [Гирлянда](https://github.com/tkhapchaev/ITMO-Programming/blob/Laboratory-Works/Algorithms%20and%20Data%20structures/garland.cpp)
-15. [Пирамида ли?](https://github.com/tkhapchaev/ITMO-Programming/blob/Laboratory-Works/Algorithms%20and%20Data%20structures/isHeap.cpp)
-16. [Пирамидальная сортировка](https://github.com/tkhapchaev/ITMO-Programming/blob/Laboratory-Works/Algorithms%20and%20Data%20structures/heapSort.cpp)
-17. [Цифровая сортировка LSD](https://github.com/tkhapchaev/ITMO-Programming/blob/Laboratory-Works/Algorithms%20and%20Data%20structures/radixSort.cpp)
-18. [Приоритетная очередь](https://github.com/tkhapchaev/ITMO-Programming/blob/Laboratory-Works/Algorithms%20and%20Data%20structures/priorityQueue.cpp)
-19. [Высота дерева](https://github.com/tkhapchaev/ITMO-Programming/blob/Laboratory-Works/Algorithms%20and%20Data%20structures/height.cpp)
-20. [Проверка корректности](https://github.com/tkhapchaev/ITMO-Programming/blob/Laboratory-Works/Algorithms%20and%20Data%20structures/check.cpp)
-21. [Интерпретатор языка Quack](https://github.com/tkhapchaev/ITMO-Programming/blob/Laboratory-Works/Algorithms%20and%20Data%20structures/quack.py)
-22. [Реализация калькулятора методом двух знаковых массивов](https://github.com/tkhapchaev/ITMO-Programming/blob/Laboratory-Works/Algorithms%20and%20Data%20structures/calculator.py)
-23. [Множество с использованием хеш-таблицы](https://github.com/tkhapchaev/ITMO-Programming/blob/Laboratory-Works/Algorithms%20and%20Data%20structures/set.cpp)
-24. [Ассоциативный массив с использованием хеш-таблицы](https://github.com/tkhapchaev/ITMO-Programming/blob/Laboratory-Works/Algorithms%20and%20Data%20structures/map.cpp)
-25. [Проверка сбалансированности двоичного дерева](https://github.com/tkhapchaev/ITMO-Programming/blob/Laboratory-Works/Algorithms%20and%20Data%20structures/balance.cpp)
+### `Алгоритмы и структуры данных` [Link](https://github.com/tkhapchaev/ITMO-Programming/tree/Laboratory-Works/Algorithms%20and%20Data%20structures)
 
 ### `Программирование на C`
 1. [Утилита WordCount](https://github.com/tkhapchaev/ITMO-Programming/blob/Laboratory-Works/C/wordcount.c)
@@ -34,5 +9,3 @@ ________________________________________________________________________________
 4. [Редактор метаинформации mp3-файла](https://github.com/tkhapchaev/ITMO-Programming/blob/Laboratory-Works/C/ID3v2_editor.c)
 5. [Игра «Жизнь»](https://github.com/tkhapchaev/ITMO-Programming/blob/Laboratory-Works/C/life.c)
 6. [Архиватор файлов](https://github.com/tkhapchaev/ITMO-Programming/blob/Laboratory-Works/C/archiver.c)
-
-### `Программирование на C++ (soon)`
