@@ -1,8 +1,5 @@
 ![ITMO_logo](https://user-images.githubusercontent.com/89847233/147676967-5810ea54-a4eb-4dfe-9648-789977890def.jpg)
 ___________________________________________________________________________________________________________________
-### `Алгоритмы и структуры данных`
-[Link](https://github.com/tkhapchaev/ITMO-Programming/tree/Laboratory-Works/Algorithms%20and%20Data%20structures)
-
 ### `Программирование на C`
 1. [Утилита WordCount](https://github.com/tkhapchaev/ITMO-Programming/blob/Laboratory-Works/C/wordcount.c)
 2. [Пользовательский тип данных uint1024_t](https://github.com/tkhapchaev/ITMO-Programming/blob/Laboratory-Works/C/uint1024_t.c)
