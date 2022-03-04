@@ -471,10 +471,7 @@ std::istream &operator>>(std::istream &stream, Polynomial &polynomialInput) {
 }
 
 int main() {
-    Point myPoint1;
-    Point myPoint2;
-    Point myPoint3;
-    Point myPoint4;
+    Point myPoint;
     PolygonalChain myPolygonalChain;
     ClosedPolygonalChain myClosedPolygonalChain;
     Polygon myPolygon;
@@ -482,14 +479,5 @@ int main() {
     Triangle myTriangle;
     Trapezoid myTrapezoid;
     Polynomial myPolynomial;
-    Polynomial myPolynomial2;
-    Polynomial myPolynomial3;
-    myPoint1.setValues(0, 0);
-    myPoint2.setValues(0, 0);
-    myPoint3.setValues(0, 0);
-    myPoint4.setValues(0, 0);
-    std::vector<Point> myVector = {myPoint1, myPoint2, myPoint3, myPoint4};
-    std::vector<double> polynomial1 = {1, 1, 1};
-    std::vector<double> polynomial2 = {2, 2, 2};
     return 0;
 }
