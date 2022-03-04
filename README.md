@@ -1,5 +1,3 @@
-![ITMO_logo](https://user-images.githubusercontent.com/89847233/147676967-5810ea54-a4eb-4dfe-9648-789977890def.jpg)
-___________________________________________________________________________________________________________________
 ### `C`
 1. [Утилита WordCount](https://github.com/tkhapchaev/ITMO-Programming/blob/Laboratory-Works/C/wordcount.c)
 2. [Пользовательский тип данных uint1024_t](https://github.com/tkhapchaev/ITMO-Programming/blob/Laboratory-Works/C/uint1024_t.c)
@@ -7,3 +5,12 @@ ________________________________________________________________________________
 4. [Редактор метаинформации mp3-файла](https://github.com/tkhapchaev/ITMO-Programming/blob/Laboratory-Works/C/ID3v2_editor.c)
 5. [Игра «Жизнь»](https://github.com/tkhapchaev/ITMO-Programming/blob/Laboratory-Works/C/life.c)
 6. [Архиватор файлов](https://github.com/tkhapchaev/ITMO-Programming/blob/Laboratory-Works/C/archiver.c)
+
+___________________________________________________________________________________________________________________
+### `C++`
+1. [ООП. Классы]()
+2. [Внешние библиотеки]()
+3. [STL. Контейнеры]()
+4. [Кубик Рубика]()
+5. [Custom allocator]()
+6. []()
