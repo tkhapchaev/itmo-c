@@ -460,8 +460,9 @@ std::ostream &operator<<(std::ostream &stream, const Polynomial &polynomialOutpu
 
 std::istream &operator>>(std::istream &stream, Polynomial &polynomialInput) {
     int16_t polynomialDegree; stream >> polynomialDegree;
+    polynomialDegree = polynomialDegree + 1;
     polynomialInput.coefficients.resize(polynomialDegree);
-    for (int16_t i = 0; i <= polynomialDegree; i++) {
+    for (int16_t i = 0; i < polynomialDegree; i++) {
         double coefficientInput; stream >> coefficientInput;
         polynomialInput.coefficients[i] = coefficientInput;
     }
@@ -474,7 +475,6 @@ int main() {
     Point myPoint2;
     Point myPoint3;
     Point myPoint4;
-    Point myPoint5;
     PolygonalChain myPolygonalChain;
     ClosedPolygonalChain myClosedPolygonalChain;
     Polygon myPolygon;
