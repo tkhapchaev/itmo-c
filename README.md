@@ -1,4 +1,4 @@
-![C](https://user-images.githubusercontent.com/89847233/162433735-62c0323b-4730-4449-8017-01c6a70bc023.jpg)
+![C_logo](https://user-images.githubusercontent.com/89847233/162434135-8532ff80-0124-454d-9fb2-22723530bd70.png)
 
 1. [Утилита WordCount](https://github.com/tkhapchaev/ITMO-Programming/blob/Laboratory-Works/C/wordcount.c)
 2. [Пользовательский тип данных uint1024_t](https://github.com/tkhapchaev/ITMO-Programming/blob/Laboratory-Works/C/uint1024_t.c)
